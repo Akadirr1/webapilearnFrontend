@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Search Flights - BoardingPass</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="script.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+		<!-- Background Image -->
+		<div class="absolute inset-0 z-0 opacity-5 dark:opacity-[0.02]">
+			<img class="h-full w-full object-cover" data-alt="Abstract white architectural lines on a dark background"
+				src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPsGJdHPt69l_K7CyQncvuf6nEiWlLtFMvzZbOyytg05dOP6YT70KYQxktOPcV_v5cTtbo6CLW20pcBLKeRm7aMWEhcIZz-MxJhvSdjNPLCcFxhVzpzpCiBHhFbX9g10hPXm9YgXptvJblQyX8pt90YTYZTlT-WshxHiArUcN4EMG2BRJVUEDmUOH4_5hOe6yNNw33FgoVfsvPX0FeN3W2RA4QUhNATrOHYwEwE_BFp94kIr3PjUXqcN31FB_ThG6keu4fmt-ZYnI" />
+		</div>
+
+		<!-- Header -->
+		<header
+			class="relative z-10 border-b border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="material-symbols-outlined text-primary text-4xl">flight_takeoff</span>
+						<span
+							class="text-2xl font-bold tracking-tight text-text-light dark:text-text-dark">BoardingPass</span>
+					</div>
+					<nav class="flex items-center gap-6">
+						<a href="#"
+							class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary">My
+							Bookings</a>
+						<a href="#"
+							class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary">Profile</a>
+						<button
+							class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">logout</span>
+							Logout
+						</button>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="relative z-10 flex-1 py-8 px-4 sm:px-6 lg:px-8">
+			<div class="mx-auto max-w-5xl">
+				<!-- Page Title -->
+				<div class="mb-8 text-center">
+					<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Find Your
+						Perfect Flight</h1>
+					<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Search and book flights to destinations
+						worldwide</p>
+				</div>
+
+				<!-- Search Card -->
+				<div
+					class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 shadow-xl backdrop-blur-sm sm:p-8">
+					<form id="flight-search-form" class="space-y-6">
+						<!-- From and To -->
+						<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+							<!-- From -->
+							<div>
+								<label class="block text-sm font-semibold text-text-light dark:text-text-dark pb-2"
+									for="kalkis-yeri">
+									<span class="flex items-center gap-2">
+										<span
+											class="material-symbols-outlined text-primary text-xl">flight_takeoff</span>
+										Kalkış Yeri
+									</span>
+								</label>
+								<select
+									class="form-select block w-full rounded-lg border-border-light bg-background-light p-3.5 text-sm text-text-light focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark"
+									id="kalkis-yeri" name="kalkis-yeri" required>
+									<option value="">Şehir seçin</option>
+									<option value="ADA">Adana (ADA)</option>
+									<option value="ADF">Adıyaman (ADF)</option>
+									<option value="AFY">Afyonkarahisar (AFY)</option>
+									<option value="AJI">Ağrı (AJI)</option>
+									<option value="ASR">Aksaray (ASR)</option>
+									<option value="MZH">Amasya (MZH)</option>
+									<option value="ESB">Ankara (ESB)</option>
+									<option value="AYT">Antalya (AYT)</option>
+									<option value="ARD">Ardahan (ARD)</option>
+									<option value="ART">Artvin (ART)</option>
+									<option value="AYD">Aydın (AYD)</option>
+									<option value="BZI">Balıkesir (BZI)</option>
+									<option value="BAR">Bartın (BAR)</option>
+									<option value="BAL">Batman (BAL)</option>
+									<option value="BAY">Bayburt (BAY)</option>
+									<option value="BIL">Bilecik (BIL)</option>
+									<option value="BGG">Bingöl (BGG)</option>
+									<option value="BTL">Bitlis (BTL)</option>
+									<option value="BOL">Bolu (BOL)</option>
+									<option value="BRD">Burdur (BRD)</option>
+									<option value="BTZ">Bursa (BTZ)</option>
+									<option value="CKZ">Çanakkale (CKZ)</option>
+									<option value="CKR">Çankırı (CKR)</option>
+									<option value="COR">Çorum (COR)</option>
+									<option value="DNZ">Denizli (DNZ)</option>
+									<option value="DIY">Diyarbakır (DIY)</option>
+									<option value="DZC">Düzce (DZC)</option>
+									<option value="EDI">Edirne (EDI)</option>
+									<option value="EZS">Elazığ (EZS)</option>
+									<option value="ERC">Erzincan (ERC)</option>
+									<option value="ERZ">Erzurum (ERZ)</option>
+									<option value="ESK">Eskişehir (ESK)</option>
+									<option value="GZT">Gaziantep (GZT)</option>
+									<option value="GIR">Giresun (GIR)</option>
+									<option value="GUM">Gümüşhane (GUM)</option>
+									<option value="HAK">Hakkari (HAK)</option>
+									<option value="HTY">Hatay (HTY)</option>
+									<option value="IGD">Iğdır (IGD)</option>
+									<option value="ISE">Isparta (ISE)</option>
+									<option value="IST">İstanbul (IST)</option>
+									<option value="ADB">İzmir (ADB)</option>
+									<option value="KCM">Kahramanmaraş (KCM)</option>
+									<option value="KRB">Karabük (KRB)</option>
+									<option value="KRM">Karaman (KRM)</option>
+									<option value="KSY">Kars (KSY)</option>
+									<option value="KAS">Kastamonu (KAS)</option>
+									<option value="ASR">Kayseri (ASR)</option>
+									<option value="KRK">Kırıkkale (KRK)</option>
+									<option value="KLR">Kırklareli (KLR)</option>
+									<option value="KSH">Kırşehir (KSH)</option>
+									<option value="KLS">Kilis (KLS)</option>
+									<option value="KOC">Kocaeli (KOC)</option>
+									<option value="KYA">Konya (KYA)</option>
+									<option value="KUT">Kütahya (KUT)</option>
+									<option value="MLX">Malatya (MLX)</option>
+									<option value="MNS">Manisa (MNS)</option>
+									<option value="MQM">Mardin (MQM)</option>
+									<option value="MER">Mersin (MER)</option>
+									<option value="DLM">Muğla (DLM)</option>
+									<option value="MSR">Muş (MSR)</option>
+									<option value="NAV">Nevşehir (NAV)</option>
+									<option value="NIG">Niğde (NIG)</option>
+									<option value="ORD">Ordu (ORD)</option>
+									<option value="OSM">Osmaniye (OSM)</option>
+									<option value="RZE">Rize (RZE)</option>
+									<option value="SAK">Sakarya (SAK)</option>
+									<option value="SZF">Samsun (SZF)</option>
+									<option value="SXZ">Siirt (SXZ)</option>
+									<option value="SIN">Sinop (SIN)</option>
+									<option value="VAS">Sivas (VAS)</option>
+									<option value="SFQ">Şanlıurfa (SFQ)</option>
+									<option value="NKT">Şırnak (NKT)</option>
+									<option value="TEK">Tekirdağ (TEK)</option>
+									<option value="TKT">Tokat (TKT)</option>
+									<option value="TZX">Trabzon (TZX)</option>
+									<option value="TUN">Tunceli (TUN)</option>
+									<option value="USK">Uşak (USK)</option>
+									<option value="VAN">Van (VAN)</option>
+									<option value="YLV">Yalova (YLV)</option>
+									<option value="YOZ">Yozgat (YOZ)</option>
+									<option value="ZON">Zonguldak (ZON)</option>
+								</select>
+							</div>
+
+							<!-- To -->
+							<div>
+								<label class="block text-sm font-semibold text-text-light dark:text-text-dark pb-2"
+									for="varis-yeri">
+									<span class="flex items-center gap-2">
+										<span class="material-symbols-outlined text-primary text-xl">flight_land</span>
+										Varış Yeri
+									</span>
+								</label>
+								<select
+									class="form-select block w-full rounded-lg border-border-light bg-background-light p-3.5 text-sm text-text-light focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark"
+									id="varis-yeri" name="varis-yeri" required>
+									<option value="">Şehir seçin</option>
+									<option value="ADA">Adana (ADA)</option>
+									<option value="ADF">Adıyaman (ADF)</option>
+									<option value="AFY">Afyonkarahisar (AFY)</option>
+									<option value="AJI">Ağrı (AJI)</option>
+									<option value="ASR">Aksaray (ASR)</option>
+									<option value="MZH">Amasya (MZH)</option>
+									<option value="ESB">Ankara (ESB)</option>
+									<option value="AYT">Antalya (AYT)</option>
+									<option value="ARD">Ardahan (ARD)</option>
+									<option value="ART">Artvin (ART)</option>
+									<option value="AYD">Aydın (AYD)</option>
+									<option value="BZI">Balıkesir (BZI)</option>
+									<option value="BAR">Bartın (BAR)</option>
+									<option value="BAL">Batman (BAL)</option>
+									<option value="BAY">Bayburt (BAY)</option>
+									<option value="BIL">Bilecik (BIL)</option>
+									<option value="BGG">Bingöl (BGG)</option>
+									<option value="BTL">Bitlis (BTL)</option>
+									<option value="BOL">Bolu (BOL)</option>
+									<option value="BRD">Burdur (BRD)</option>
+									<option value="BTZ">Bursa (BTZ)</option>
+									<option value="CKZ">Çanakkale (CKZ)</option>
+									<option value="CKR">Çankırı (CKR)</option>
+									<option value="COR">Çorum (COR)</option>
+									<option value="DNZ">Denizli (DNZ)</option>
+									<option value="DIY">Diyarbakır (DIY)</option>
+									<option value="DZC">Düzce (DZC)</option>
+									<option value="EDI">Edirne (EDI)</option>
+									<option value="EZS">Elazığ (EZS)</option>
+									<option value="ERC">Erzincan (ERC)</option>
+									<option value="ERZ">Erzurum (ERZ)</option>
+									<option value="ESK">Eskişehir (ESK)</option>
+									<option value="GZT">Gaziantep (GZT)</option>
+									<option value="GIR">Giresun (GIR)</option>
+									<option value="GUM">Gümüşhane (GUM)</option>
+									<option value="HAK">Hakkari (HAK)</option>
+									<option value="HTY">Hatay (HTY)</option>
+									<option value="IGD">Iğdır (IGD)</option>
+									<option value="ISE">Isparta (ISE)</option>
+									<option value="IST">İstanbul (IST)</option>
+									<option value="ADB">İzmir (ADB)</option>
+									<option value="KCM">Kahramanmaraş (KCM)</option>
+									<option value="KRB">Karabük (KRB)</option>
+									<option value="KRM">Karaman (KRM)</option>
+									<option value="KSY">Kars (KSY)</option>
+									<option value="KAS">Kastamonu (KAS)</option>
+									<option value="ASR">Kayseri (ASR)</option>
+									<option value="KRK">Kırıkkale (KRK)</option>
+									<option value="KLR">Kırklareli (KLR)</option>
+									<option value="KSH">Kırşehir (KSH)</option>
+									<option value="KLS">Kilis (KLS)</option>
+									<option value="KOC">Kocaeli (KOC)</option>
+									<option value="KYA">Konya (KYA)</option>
+									<option value="KUT">Kütahya (KUT)</option>
+									<option value="MLX">Malatya (MLX)</option>
+									<option value="MNS">Manisa (MNS)</option>
+									<option value="MQM">Mardin (MQM)</option>
+									<option value="MER">Mersin (MER)</option>
+									<option value="DLM">Muğla (DLM)</option>
+									<option value="MSR">Muş (MSR)</option>
+									<option value="NAV">Nevşehir (NAV)</option>
+									<option value="NIG">Niğde (NIG)</option>
+									<option value="ORD">Ordu (ORD)</option>
+									<option value="OSM">Osmaniye (OSM)</option>
+									<option value="RZE">Rize (RZE)</option>
+									<option value="SAK">Sakarya (SAK)</option>
+									<option value="SZF">Samsun (SZF)</option>
+									<option value="SXZ">Siirt (SXZ)</option>
+									<option value="SIN">Sinop (SIN)</option>
+									<option value="VAS">Sivas (VAS)</option>
+									<option value="SFQ">Şanlıurfa (SFQ)</option>
+									<option value="NKT">Şırnak (NKT)</option>
+									<option value="TEK">Tekirdağ (TEK)</option>
+									<option value="TKT">Tokat (TKT)</option>
+									<option value="TZX">Trabzon (TZX)</option>
+									<option value="TUN">Tunceli (TUN)</option>
+									<option value="USK">Uşak (USK)</option>
+									<option value="VAN">Van (VAN)</option>
+									<option value="YLV">Yalova (YLV)</option>
+									<option value="YOZ">Yozgat (YOZ)</option>
+									<option value="ZON">Zonguldak (ZON)</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Departure Date -->
+						<div>
+							<label class="block text-sm font-semibold text-text-light dark:text-text-dark pb-2"
+								for="kalkis-tarihi">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary text-xl">calendar_today</span>
+									Kalkış Tarihi
+								</span>
+							</label>
+							<input
+								class="form-input block w-full rounded-lg border-border-light bg-background-light p-3.5 text-sm text-text-light focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark"
+								id="kalkis-tarihi" name="kalkis-tarihi" type="date" required />
+							<p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">Lütfen kalkış tarihinizi seçin
+							</p>
+						</div>
+
+						<!-- Search Button -->
+						<div class="pt-4">
+							<button
+								class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+								type="submit">
+								<span class="material-symbols-outlined text-xl">search</span>
+								Uçuş Ara
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- Results Section -->
+				<div id="results-section" class="mt-8 hidden">
+					<div class="mb-4 flex items-center justify-between">
+						<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Bulunan Uçuşlar</h2>
+						<span id="results-count" class="text-sm text-gray-600 dark:text-gray-400"></span>
+					</div>
+					<div id="results-container" class="space-y-4">
+						<!-- Results will be dynamically inserted here -->
+					</div>
+				</div>
+
+				<!-- Loading State -->
+				<div id="loading-state" class="mt-8 hidden">
+					<div
+						class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+						<div class="flex justify-center mb-4">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent">
+							</div>
+						</div>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçuşlar aranıyor...</p>
+						<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Lütfen bekleyin</p>
+					</div>
+				</div>
+
+				<!-- No Results -->
+				<div id="no-results" class="mt-8 hidden">
+					<div
+						class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+						<span class="material-symbols-outlined text-6xl text-gray-400 mb-4">flight_off</span>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Üzgünüz, uçuş bulunamadı</p>
+						<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Lütfen farklı bir arama yapın</p>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer
+			class="relative z-10 border-t border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+				<p class="text-center text-sm text-gray-600 dark:text-gray-400">
+					© 2025 BoardingPass. All rights reserved.
+				</p>
+			</div>
+		</footer>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+/* Custom Styles */
+
+/* Ensure date input has proper styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+	cursor: pointer;
+	filter: invert(0.5);
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+}
+
+/* Smooth transitions */
+* {
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Loading animation */
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.animate-spin {
+	animation: spin 1s linear infinite;
+}
+
+/* Flight card hover effect */
+.flight-card {
+	transition: all 0.3s ease;
+}
+
+.flight-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.dark ::-webkit-scrollbar-track {
+	background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+	background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: #6b7280;
+}

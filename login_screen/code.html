@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Login - Boarding Ticket System</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="script.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+		<div class="flex flex-1 w-full">
+			<!-- Left Panel with Image -->
+			<div class="hidden lg:flex flex-1 w-1/2 bg-primary items-center justify-center relative">
+				<img class="absolute inset-0 h-full w-full object-cover opacity-20"
+					data-alt="Abstract view of an airplane wing in the clouds"
+					src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnvYA73cgXlB9ZF43YvNhJBxGNn6nA0G-2SlXx1l_7DS7Ii-0UFqTKnvK01gRXCEtNgB05BnFypn9WwMJrzX63ZH3DI77Nx-4pCbssK_s7f6fWo31-4FCJ7wwH26BnHEelvb2cqSd1Dy36i2kRNHvq4Vmhpv3L0YBjYFsHMcCCyTsyG_ILWqfQXF2nvX8p_4y0ZdD4M6zwiQ53PHcGmwUfhXUuUI6qsBO0zR-xdWNsdfRf8pilivPc64pzHipfRIJOvI9yeZdmEDU" />
+				<div class="relative z-10 p-12 text-white">
+					<h1 class="text-5xl font-black tracking-tighter mb-4">Your Journey Awaits</h1>
+					<p class="text-xl font-light opacity-80">Seamless travel starts here. Log in to manage your flights
+						and explore new destinations.</p>
+				</div>
+			</div>
+			<!-- Right Panel with Login Form -->
+			<div
+				class="flex flex-1 w-full lg:w-1/2 items-center justify-center p-6 sm:p-12 bg-background-light dark:bg-background-dark">
+				<div class="w-full max-w-md">
+					<!-- Header -->
+					<div class="flex items-center gap-3 mb-8">
+						<span class="material-symbols-outlined text-primary text-4xl">flight_takeoff</span>
+						<p class="text-2xl font-bold text-text-light dark:text-text-dark">FlightDeck</p>
+					</div>
+					<!-- Page Heading -->
+					<div class="mb-8">
+						<p
+							class="text-4xl font-black leading-tight tracking-tighter text-text-light dark:text-text-dark">
+							Welcome Back</p>
+						<p
+							class="text-base font-normal leading-normal text-text-muted-light dark:text-text-muted-dark mt-2">
+							Access your bookings and flight details.</p>
+					</div>
+					<!-- Login Form -->
+					<form id="loginForm" class="flex flex-col gap-6">
+						<!-- Error Message -->
+						<div id="errorMessage"
+							class="hidden p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+							<p class="text-sm text-red-600 dark:text-red-400"></p>
+						</div>
+						<!-- Email Field -->
+						<label class="flex flex-col flex-1">
+							<p class="text-base font-medium leading-normal pb-2 text-text-light dark:text-text-dark">
+								Email</p>
+							<div class="relative flex w-full flex-1 items-stretch">
+								<span
+									class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark pointer-events-none">person</span>
+								<input id="emailInput"
+									class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-secondary/50 border border-border-light dark:border-border-dark h-14 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark p-[15px] pl-12 text-base font-normal leading-normal"
+									placeholder="Enter your email" type="email" required />
+							</div>
+						</label>
+						<!-- Password Field -->
+						<label class="flex flex-col flex-1">
+							<div class="flex justify-between items-baseline pb-2">
+								<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">
+									Password</p>
+								<a class="text-sm font-medium text-primary hover:text-secondary transition-colors duration-200"
+									href="#">Forgot Password?</a>
+							</div>
+							<div class="relative flex w-full flex-1 items-stretch">
+								<span
+									class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark pointer-events-none">lock</span>
+								<input id="passwordInput"
+									class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-secondary/50 border border-border-light dark:border-border-dark h-14 placeholder:text-text-muted-light dark:placeholder:text-text-muted-dark p-[15px] pl-12 pr-12 text-base font-normal leading-normal"
+									placeholder="Enter your password" type="password" required />
+								<button type="button" id="togglePassword"
+									class="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark"
+									data-icon="Eye" data-size="24px" data-weight="regular">
+									<span class="material-symbols-outlined">visibility</span>
+								</button>
+							</div>
+						</label>
+						<!-- Remember Me Checkbox -->
+						<label class="flex gap-x-3 items-center custom-checkbox">
+							<input id="rememberMe"
+								class="h-5 w-5 rounded border-border-light dark:border-border-dark border-2 bg-transparent text-primary checked:bg-primary checked:border-primary checked:bg-[image:--checkbox-tick-svg] focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-secondary/50 focus:outline-none"
+								type="checkbox" />
+							<p class="text-base font-normal leading-normal text-text-light dark:text-text-dark">Remember
+								Me</p>
+						</label>
+						<!-- Log In Button -->
+						<button type="submit" id="loginButton"
+							class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-slate-50 text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark focus:ring-primary">
+							<span class="truncate">Log In</span>
+						</button>
+					</form>
+					<!-- Divider and Social Logins -->
+					<div class="flex items-center gap-4 my-8">
+						<hr class="flex-1 border-border-light dark:border-border-dark" />
+						<p class="text-sm font-medium text-text-muted-light dark:text-text-muted-dark">OR</p>
+						<hr class="flex-1 border-border-light dark:border-border-dark" />
+					</div>
+					<div class="flex flex-col sm:flex-row gap-4">
+						<button
+							class="flex-1 flex items-center justify-center gap-2 h-12 px-5 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+							<img alt="Google logo" class="w-5 h-5"
+								src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvygAg_u28xvTsz6CZ5nFClnDLJQBOdvqXz78WIhTG44UsbJ4A9DqqNrWyKp5fUwBySKPVmepA7P84ZF2HctfPEZIShoXPRjjzwqVE36wM0qjFMWcBeEaJPvZY0TUzk_j2_JVIisheHHEqxf916uGRJmWZfwTgFHtKt0UwhGL7fPl_VWUcoePqRCiRX9rA4-WJHR15Ts5XeDkiVO_Hd3S1YPPhLsXMrt2QuhX8JtZ8oGgtHLv9bN-_ETOftoV5lCyRuUM9Ne3dBd8" />
+							<span>Google</span>
+						</button>
+						<button
+							class="flex-1 flex items-center justify-center gap-2 h-12 px-5 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+							<img alt="Apple logo" class="w-5 h-5"
+								src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXGDAqf9XFCLNAv6yhsRwKFgPWsE3OPN2eSoEVLS8h3lReJg6LNP8SciHsc9J1n5YB_2G9d0UFJeVUmhLoP8dikSu5o6DEqwTcpqcgU2eFiIe5VOOIQiSyoCBz0UyLwkR9ybAGBOMQQfHNz4YRCMrv3pB6rKAADBtezSpBEHRlKl3V4iLAhe_lIepyPcZmyBACoQIQI6NZprw7EFwSXdGfCudbAKsAEsCVvnhCWBb8hfXfUFL4HKYAzrdQnT_0CB4J_dQ-fvooK4A" />
+							<span>Apple</span>
+						</button>
+					</div>
+					<!-- Sign Up Prompt -->
+					<p class="text-center text-base mt-8 text-text-muted-light dark:text-text-muted-dark">
+						Don't have an account? <a
+							class="font-bold text-primary hover:text-secondary transition-colors duration-200"
+							href="#">Sign Up</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,328 @@
+{
+	"cities": [
+		{
+			"name": "Adana",
+			"code": "ADA"
+		},
+		{
+			"name": "Adıyaman",
+			"code": "ADF"
+		},
+		{
+			"name": "Afyonkarahisar",
+			"code": "AFY"
+		},
+		{
+			"name": "Ağrı",
+			"code": "AJI"
+		},
+		{
+			"name": "Aksaray",
+			"code": "ASR"
+		},
+		{
+			"name": "Amasya",
+			"code": "MZH"
+		},
+		{
+			"name": "Ankara",
+			"code": "ESB"
+		},
+		{
+			"name": "Antalya",
+			"code": "AYT"
+		},
+		{
+			"name": "Ardahan",
+			"code": "ARD"
+		},
+		{
+			"name": "Artvin",
+			"code": "ART"
+		},
+		{
+			"name": "Aydın",
+			"code": "AYD"
+		},
+		{
+			"name": "Balıkesir",
+			"code": "BZI"
+		},
+		{
+			"name": "Bartın",
+			"code": "BAR"
+		},
+		{
+			"name": "Batman",
+			"code": "BAL"
+		},
+		{
+			"name": "Bayburt",
+			"code": "BAY"
+		},
+		{
+			"name": "Bilecik",
+			"code": "BIL"
+		},
+		{
+			"name": "Bingöl",
+			"code": "BGG"
+		},
+		{
+			"name": "Bitlis",
+			"code": "BTL"
+		},
+		{
+			"name": "Bolu",
+			"code": "BOL"
+		},
+		{
+			"name": "Burdur",
+			"code": "BRD"
+		},
+		{
+			"name": "Bursa",
+			"code": "BTZ"
+		},
+		{
+			"name": "Çanakkale",
+			"code": "CKZ"
+		},
+		{
+			"name": "Çankırı",
+			"code": "CKR"
+		},
+		{
+			"name": "Çorum",
+			"code": "COR"
+		},
+		{
+			"name": "Denizli",
+			"code": "DNZ"
+		},
+		{
+			"name": "Diyarbakır",
+			"code": "DIY"
+		},
+		{
+			"name": "Düzce",
+			"code": "DZC"
+		},
+		{
+			"name": "Edirne",
+			"code": "EDI"
+		},
+		{
+			"name": "Elazığ",
+			"code": "EZS"
+		},
+		{
+			"name": "Erzincan",
+			"code": "ERC"
+		},
+		{
+			"name": "Erzurum",
+			"code": "ERZ"
+		},
+		{
+			"name": "Eskişehir",
+			"code": "ESK"
+		},
+		{
+			"name": "Gaziantep",
+			"code": "GZT"
+		},
+		{
+			"name": "Giresun",
+			"code": "GIR"
+		},
+		{
+			"name": "Gümüşhane",
+			"code": "GUM"
+		},
+		{
+			"name": "Hakkari",
+			"code": "HAK"
+		},
+		{
+			"name": "Hatay",
+			"code": "HTY"
+		},
+		{
+			"name": "Iğdır",
+			"code": "IGD"
+		},
+		{
+			"name": "Isparta",
+			"code": "ISE"
+		},
+		{
+			"name": "İstanbul",
+			"code": "IST"
+		},
+		{
+			"name": "İzmir",
+			"code": "ADB"
+		},
+		{
+			"name": "Kahramanmaraş",
+			"code": "KCM"
+		},
+		{
+			"name": "Karabük",
+			"code": "KRB"
+		},
+		{
+			"name": "Karaman",
+			"code": "KRM"
+		},
+		{
+			"name": "Kars",
+			"code": "KSY"
+		},
+		{
+			"name": "Kastamonu",
+			"code": "KAS"
+		},
+		{
+			"name": "Kayseri",
+			"code": "ASR"
+		},
+		{
+			"name": "Kırıkkale",
+			"code": "KRK"
+		},
+		{
+			"name": "Kırklareli",
+			"code": "KLR"
+		},
+		{
+			"name": "Kırşehir",
+			"code": "KSH"
+		},
+		{
+			"name": "Kilis",
+			"code": "KLS"
+		},
+		{
+			"name": "Kocaeli",
+			"code": "KOC"
+		},
+		{
+			"name": "Konya",
+			"code": "KYA"
+		},
+		{
+			"name": "Kütahya",
+			"code": "KUT"
+		},
+		{
+			"name": "Malatya",
+			"code": "MLX"
+		},
+		{
+			"name": "Manisa",
+			"code": "MNS"
+		},
+		{
+			"name": "Mardin",
+			"code": "MQM"
+		},
+		{
+			"name": "Mersin",
+			"code": "MER"
+		},
+		{
+			"name": "Muğla",
+			"code": "DLM"
+		},
+		{
+			"name": "Muş",
+			"code": "MSR"
+		},
+		{
+			"name": "Nevşehir",
+			"code": "NAV"
+		},
+		{
+			"name": "Niğde",
+			"code": "NIG"
+		},
+		{
+			"name": "Ordu",
+			"code": "ORD"
+		},
+		{
+			"name": "Osmaniye",
+			"code": "OSM"
+		},
+		{
+			"name": "Rize",
+			"code": "RZE"
+		},
+		{
+			"name": "Sakarya",
+			"code": "SAK"
+		},
+		{
+			"name": "Samsun",
+			"code": "SZF"
+		},
+		{
+			"name": "Siirt",
+			"code": "SXZ"
+		},
+		{
+			"name": "Sinop",
+			"code": "SIN"
+		},
+		{
+			"name": "Sivas",
+			"code": "VAS"
+		},
+		{
+			"name": "Şanlıurfa",
+			"code": "SFQ"
+		},
+		{
+			"name": "Şırnak",
+			"code": "NKT"
+		},
+		{
+			"name": "Tekirdağ",
+			"code": "TEK"
+		},
+		{
+			"name": "Tokat",
+			"code": "TKT"
+		},
+		{
+			"name": "Trabzon",
+			"code": "TZX"
+		},
+		{
+			"name": "Tunceli",
+			"code": "TUN"
+		},
+		{
+			"name": "Uşak",
+			"code": "USK"
+		},
+		{
+			"name": "Van",
+			"code": "VAN"
+		},
+		{
+			"name": "Yalova",
+			"code": "YLV"
+		},
+		{
+			"name": "Yozgat",
+			"code": "YOZ"
+		},
+		{
+			"name": "Zonguldak",
+			"code": "ZON"
+		}
+	]
+}
