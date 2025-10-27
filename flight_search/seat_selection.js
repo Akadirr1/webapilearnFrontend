@@ -28,6 +28,9 @@ tailwind.config = {
 	},
 }
 
+// API Configuration
+const API_BASE_URL = 'https://apir.koufrontend.com/api';
+
 // Seat Selection Handler
 document.addEventListener('DOMContentLoaded', function () {
 	// Get flight data from URL parameters
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Load User Info
 	async function loadUserInfo() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/CheckStatus', {
+			const response = await fetch(`${API_BASE_URL}/Auth/CheckStatus`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -132,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Handle Logout
 	async function handleLogout() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/Logout', {
+			const response = await fetch(`${API_BASE_URL}/Auth/Logout`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -160,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.log('Fetching flight with ID:', flightId);
 
 			// Fetch specific flight by ID
-			const response = await fetch(`https://localhost:7100/api/Ucus/${flightId}`, {
+			const response = await fetch(`${API_BASE_URL}/Ucus/${flightId}`, {
 				method: 'GET',
 				credentials: 'include'
 			});
@@ -338,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		confirmBtn.disabled = true;
 
 		try {
-			const response = await fetch('https://localhost:7100/api/Rezervasyon', {
+			const response = await fetch(`${API_BASE_URL}/Rezervasyon`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			submitBtn.textContent = 'Kayıt oluşturuluyor...';
 
 			// Make API request
-			const response = await fetch('https://localhost:7100/api/Auth/Register', {
+			const response = await fetch('https://apir.koufrontend.com/api/Auth/Register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

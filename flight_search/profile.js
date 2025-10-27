@@ -28,6 +28,9 @@ tailwind.config = {
 	},
 }
 
+// API Configuration
+const API_BASE_URL = 'https://apir.koufrontend.com/api';
+
 // Profile Page Handler
 document.addEventListener('DOMContentLoaded', function () {
 	// Elements
@@ -66,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Load User Info
 	async function loadUserInfo() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/CheckStatus', {
+			const response = await fetch(`${API_BASE_URL}/Auth/CheckStatus`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		reservationsContainer.innerHTML = '';
 
 		try {
-			const response = await fetch('https://localhost:7100/api/Rezervasyon', {
+			const response = await fetch(`${API_BASE_URL}/Rezervasyon`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -390,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				}
 			});
 
-			const response = await fetch(`https://localhost:7100/api/Rezervasyon?rezervasyonId=${reservationId}`, {
+			const response = await fetch(`${API_BASE_URL}/Rezervasyon?rezervasyonId=${reservationId}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
@@ -460,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Handle Logout
 	async function handleLogout() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/Logout', {
+			const response = await fetch(`${API_BASE_URL}/Auth/Logout`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

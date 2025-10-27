@@ -28,6 +28,9 @@ tailwind.config = {
 	},
 }
 
+// API Configuration
+const API_BASE_URL = 'https://apir.koufrontend.com/api';
+
 // Flight Search Handler
 document.addEventListener('DOMContentLoaded', function () {
 	const form = document.getElementById('flight-search-form');
@@ -58,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Load User Info
 	async function loadUserInfo() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/CheckStatus', {
+			const response = await fetch(`${API_BASE_URL}/Auth/CheckStatus`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -93,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Handle Logout
 	async function handleLogout() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/Logout', {
+			const response = await fetch(`${API_BASE_URL}/Auth/Logout`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -147,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		try {
 			// Build API URL with query parameters
 			// kalkisYeri and varisYeri are already city codes (IST, AYT, etc.)
-			const apiUrl = `https://localhost:7100/api/Ucus/Ara?KalkisYeri=${encodeURIComponent(kalkisYeri)}&VarisYeri=${encodeURIComponent(varisYeri)}&KalkisTarihi=${encodeURIComponent(kalkisTarihi)}`;
+			const apiUrl = `${API_BASE_URL}/Ucus/Ara?KalkisYeri=${encodeURIComponent(kalkisYeri)}&VarisYeri=${encodeURIComponent(varisYeri)}&KalkisTarihi=${encodeURIComponent(kalkisTarihi)}`;
 
 			// Debug: Log the complete API URL
 			console.log('API URL:', apiUrl);

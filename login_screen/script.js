@@ -29,7 +29,7 @@ tailwind.config = {
 }
 
 // API Configuration
-const API_BASE_URL = 'https://localhost:7100/api';
+const API_BASE_URL = 'https://apir.koufrontend.com/api';
 
 // Show/Hide Error Message
 function showError(message) {

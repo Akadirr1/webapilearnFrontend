@@ -28,6 +28,9 @@ tailwind.config = {
 	},
 }
 
+// API Configuration
+const API_BASE_URL = 'https://apir.koufrontend.com/api';
+
 // Admin Panel Handler
 document.addEventListener('DOMContentLoaded', function () {
 	// Elements
@@ -175,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Check Admin Access
 	async function checkAdminAccess() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/CheckStatus', {
+			const response = await fetch(`${API_BASE_URL}/Auth/CheckStatus`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -227,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		reservationsContainer.innerHTML = '';
 
 		try {
-			const response = await fetch('https://localhost:7100/api/Rezervasyon/GetRezAdmin', {
+			const response = await fetch(`${API_BASE_URL}/Rezervasyon/GetRezAdmin`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -525,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		try {
 
-			const response = await fetch('https://localhost:7100/api/Ucus', {
+			const response = await fetch(`${API_BASE_URL}/Ucus`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -571,7 +574,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Handle Logout
 	async function handleLogout() {
 		try {
-			const response = await fetch('https://localhost:7100/api/Auth/Logout', {
+			const response = await fetch(`${API_BASE_URL}/Auth/Logout`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -626,7 +629,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		flightsErrorState.classList.add('hidden');
 
 		try {
-			const response = await fetch('https://localhost:7100/api/Ucus', {
+			const response = await fetch(`${API_BASE_URL}/Ucus`, {
 				method: 'GET',
 				credentials: 'include'
 			});
