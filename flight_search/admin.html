@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Admin Panel - BoardingPass</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="admin.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+		<!-- Background Image -->
+		<div class="absolute inset-0 z-0 opacity-5 dark:opacity-[0.02]">
+			<img class="h-full w-full object-cover" data-alt="Abstract white architectural lines on a dark background"
+				src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPsGJdHPt69l_K7CyQncvuf6nEiWlLtFMvzZbOyytg05dOP6YT70KYQxktOPcV_v5cTtbo6CLW20pcBLKeRm7aMWEhcIZz-MxJhvSdjNPLCcFxhVzpzpCiBHhFbX9g10hPXm9YgXptvJblQyX8pt90YTYZTlT-WshxHiArUcN4EMG2BRJVUEDmUOH4_5hOe6yNNw33FgoVfsvPX0FeN3W2RA4QUhNATrOHYwEwE_BFp94kIr3PjUXqcN31FB_ThG6keu4fmt-ZYnI" />
+		</div>
+
+		<!-- Header -->
+		<header
+			class="relative z-10 border-b border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="material-symbols-outlined text-primary text-4xl">admin_panel_settings</span>
+						<span class="text-2xl font-bold tracking-tight text-text-light dark:text-text-dark">Admin
+							Panel</span>
+					</div>
+					<nav class="flex items-center gap-6">
+						<button id="create-flight-btn"
+							class="flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-sm font-semibold text-white hover:bg-success/90">
+							<span class="material-symbols-outlined text-base">add_circle</span>
+							Yeni Uçuş Oluştur
+						</button>
+						<div class="flex items-center gap-2 text-sm">
+							<span class="material-symbols-outlined text-error text-lg">shield</span>
+							<span id="admin-display-name" class="font-bold text-error">Admin</span>
+						</div>
+						<button id="logout-btn"
+							class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">logout</span>
+							Logout
+						</button>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="relative z-10 flex-1 py-8 px-4 sm:px-6 lg:px-8">
+			<div class="mx-auto max-w-7xl">
+				<!-- Tabs -->
+				<div class="mb-8">
+					<div class="border-b border-border-light dark:border-border-dark">
+						<nav class="-mb-px flex gap-6">
+							<button id="tab-reservations"
+								class="tab-btn active border-b-2 border-primary py-4 px-1 text-sm font-semibold text-primary">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-lg">confirmation_number</span>
+									Rezervasyonlar
+								</span>
+							</button>
+							<button id="tab-flights"
+								class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:border-gray-300">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-lg">flight</span>
+									Uçuşlar
+								</span>
+							</button>
+						</nav>
+					</div>
+				</div>
+
+				<!-- Reservations Content -->
+				<div id="content-reservations" class="tab-content">
+					<!-- Page Title -->
+					<div class="mb-8">
+						<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Tüm
+							Rezervasyonlar</h1>
+						<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Sistemdeki tüm rezervasyonları
+							görüntüleyin ve yönetin</p>
+					</div>
+
+					<!-- Stats Cards -->
+					<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-primary text-3xl">confirmation_number</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Toplam</p>
+									<p id="total-count" class="text-2xl font-bold text-text-light dark:text-text-dark">0
+									</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-success text-3xl">check_circle</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Aktif</p>
+									<p id="active-count" class="text-2xl font-bold text-success">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-error text-3xl">cancel</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">İptal</p>
+									<p id="cancelled-count" class="text-2xl font-bold text-error">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-primary text-3xl">attach_money</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Toplam Gelir</p>
+									<p id="total-revenue" class="text-2xl font-bold text-primary">₺ 0</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Filters -->
+					<div
+						class="mb-6 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+						<h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-4">Filtreler</h3>
+						<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+							<div>
+								<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">PNR
+									Kodu</label>
+								<input type="text" id="filter-pnr" placeholder="Ara..."
+									class="w-full rounded-lg border-border-light bg-background-light p-2.5 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+							</div>
+							<div>
+								<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Kalkış
+									Yeri</label>
+								<input type="text" id="filter-departure" placeholder="Örn: IST"
+									class="w-full rounded-lg border-border-light bg-background-light p-2.5 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+							</div>
+							<div>
+								<label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Varış
+									Yeri</label>
+								<input type="text" id="filter-arrival" placeholder="Örn: AYT"
+									class="w-full rounded-lg border-border-light bg-background-light p-2.5 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+							</div>
+							<div>
+								<label
+									class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Durum</label>
+								<select id="filter-status"
+									class="w-full rounded-lg border-border-light bg-background-light p-2.5 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+									<option value="">Tümü</option>
+									<option value="aktif">Aktif</option>
+									<option value="iptal">İptal</option>
+								</select>
+							</div>
+						</div>
+						<div class="mt-4 flex gap-3">
+							<button id="apply-filters-btn"
+								class="flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white hover:bg-primary/90">
+								<span class="material-symbols-outlined text-base">filter_alt</span>
+								Filtrele
+							</button>
+							<button id="clear-filters-btn"
+								class="flex items-center gap-2 rounded-lg border border-border-light dark:border-border-dark px-6 py-2.5 text-sm font-semibold text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-800">
+								<span class="material-symbols-outlined text-base">clear</span>
+								Temizle
+							</button>
+						</div>
+					</div>
+
+					<!-- Reservations List -->
+					<div class="mb-6">
+						<h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Rezervasyon Listesi</h2>
+						<p class="text-sm text-gray-600 dark:text-gray-400" id="showing-count">Yükleniyor...</p>
+					</div>
+
+					<!-- Reservations Container -->
+					<div id="reservations-container" class="space-y-4">
+						<!-- Reservations will be loaded here -->
+					</div>
+
+					<!-- Loading State -->
+					<div id="loading-state" class="mt-8">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+							<div class="flex justify-center mb-4">
+								<div
+									class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent">
+								</div>
+							</div>
+							<p class="text-lg font-medium text-text-light dark:text-text-dark">Rezervasyonlar
+								yükleniyor...</p>
+							<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Lütfen bekleyin</p>
+						</div>
+					</div>
+
+					<!-- No Reservations -->
+					<div id="no-reservations" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+							<span class="material-symbols-outlined text-6xl text-gray-400 mb-4">event_busy</span>
+							<p class="text-lg font-medium text-text-light dark:text-text-dark">Rezervasyon bulunamadı
+							</p>
+							<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Filtreleri değiştirip tekrar
+								deneyin</p>
+						</div>
+					</div>
+
+					<!-- Error State -->
+					<div id="error-state" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-900/20 p-12 text-center backdrop-blur-sm">
+							<span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+							<p class="text-lg font-medium text-red-700 dark:text-red-400">Rezervasyonlar yüklenirken
+								hata oluştu</p>
+							<p class="mt-2 text-sm text-red-600 dark:text-red-500" id="error-message">Lütfen tekrar
+								deneyin</p>
+							<button id="retry-btn"
+								class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90">
+								<span class="material-symbols-outlined text-base">refresh</span>
+								Tekrar Dene
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Flights Content -->
+				<div id="content-flights" class="tab-content hidden">
+					<!-- Page Title -->
+					<div class="mb-8">
+						<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Tüm Uçuşlar
+						</h1>
+						<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Sistemdeki tüm uçuşları görüntüleyin
+						</p>
+					</div>
+
+					<!-- Flight Stats -->
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-primary text-3xl">flight</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Toplam Uçuş</p>
+									<p id="flights-total-count"
+										class="text-2xl font-bold text-text-light dark:text-text-dark">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-success text-3xl">event_available</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Müsait Koltuk</p>
+									<p id="flights-available-seats" class="text-2xl font-bold text-success">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-warning text-3xl">event_busy</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Dolu Koltuk</p>
+									<p id="flights-booked-seats" class="text-2xl font-bold text-warning">0</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Loading State -->
+					<div id="flights-loading" class="mt-8">
+						<div class="flex items-center justify-center p-12">
+							<div class="flex flex-col items-center gap-4">
+								<div
+									class="h-16 w-16 animate-spin rounded-full border-4 border-gray-300 border-t-primary">
+								</div>
+								<p class="text-lg font-medium text-gray-600 dark:text-gray-400">Uçuşlar yükleniyor...
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Flights List -->
+					<div id="flights-list" class="hidden space-y-4"></div>
+
+					<!-- No Flights -->
+					<div id="no-flights" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+							<span class="material-symbols-outlined text-6xl text-gray-400 mb-4">flight_takeoff</span>
+							<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçuş bulunamadı</p>
+							<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Henüz sistemde kayıtlı uçuş
+								bulunmuyor</p>
+						</div>
+					</div>
+
+					<!-- Flights Error State -->
+					<div id="flights-error-state" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-900/20 p-12 text-center backdrop-blur-sm">
+							<span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+							<p class="text-lg font-medium text-red-700 dark:text-red-400">Uçuşlar yüklenirken hata
+								oluştu</p>
+							<p class="mt-2 text-sm text-red-600 dark:text-red-500" id="flights-error-message">Lütfen
+								tekrar deneyin</p>
+							<button id="flights-retry-btn"
+								class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90">
+								<span class="material-symbols-outlined text-base">refresh</span>
+								Tekrar Dene
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer
+			class="relative z-10 border-t border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+				<p class="text-center text-sm text-gray-600 dark:text-gray-400">
+					© 2025 BoardingPass. All rights reserved.
+				</p>
+			</div>
+		</footer>
+
+		<!-- Create Flight Modal -->
+		<div id="create-flight-modal"
+			class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+			<div
+				class="relative mx-4 w-full max-w-2xl rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-8 shadow-2xl">
+				<!-- Modal Header -->
+				<div class="mb-6 flex items-center justify-between">
+					<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Yeni Uçuş Oluştur</h2>
+					<button id="close-modal-btn" class="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+						<span class="material-symbols-outlined text-gray-600 dark:text-gray-400">close</span>
+					</button>
+				</div>
+
+				<!-- Modal Form -->
+				<form id="create-flight-form" class="space-y-4">
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<!-- Kalkış Yeri -->
+						<div>
+							<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary text-lg">flight_takeoff</span>
+									Kalkış Yeri
+								</span>
+							</label>
+							<select id="departure-city" required
+								class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+								<option value="">Şehir seçin</option>
+								<option value="ADA">Adana (ADA)</option>
+								<option value="ADF">Adıyaman (ADF)</option>
+								<option value="AFY">Afyonkarahisar (AFY)</option>
+								<option value="AJI">Ağrı (AJI)</option>
+								<option value="ASR">Aksaray (ASR)</option>
+								<option value="MZH">Amasya (MZH)</option>
+								<option value="ESB">Ankara (ESB)</option>
+								<option value="AYT">Antalya (AYT)</option>
+								<option value="ARD">Ardahan (ARD)</option>
+								<option value="ART">Artvin (ART)</option>
+								<option value="AYD">Aydın (AYD)</option>
+								<option value="BZI">Balıkesir (BZI)</option>
+								<option value="BAR">Bartın (BAR)</option>
+								<option value="BAL">Batman (BAL)</option>
+								<option value="BAY">Bayburt (BAY)</option>
+								<option value="BIL">Bilecik (BIL)</option>
+								<option value="BGG">Bingöl (BGG)</option>
+								<option value="BTL">Bitlis (BTL)</option>
+								<option value="BOL">Bolu (BOL)</option>
+								<option value="BRD">Burdur (BRD)</option>
+								<option value="BTZ">Bursa (BTZ)</option>
+								<option value="CKZ">Çanakkale (CKZ)</option>
+								<option value="CKR">Çankırı (CKR)</option>
+								<option value="COR">Çorum (COR)</option>
+								<option value="DNZ">Denizli (DNZ)</option>
+								<option value="DIY">Diyarbakır (DIY)</option>
+								<option value="DZC">Düzce (DZC)</option>
+								<option value="EDI">Edirne (EDI)</option>
+								<option value="EZS">Elazığ (EZS)</option>
+								<option value="ERC">Erzincan (ERC)</option>
+								<option value="ERZ">Erzurum (ERZ)</option>
+								<option value="ESK">Eskişehir (ESK)</option>
+								<option value="GZT">Gaziantep (GZT)</option>
+								<option value="GIR">Giresun (GIR)</option>
+								<option value="GUM">Gümüşhane (GUM)</option>
+								<option value="HAK">Hakkari (HAK)</option>
+								<option value="HTY">Hatay (HTY)</option>
+								<option value="IGD">Iğdır (IGD)</option>
+								<option value="ISE">Isparta (ISE)</option>
+								<option value="IST">İstanbul (IST)</option>
+								<option value="ADB">İzmir (ADB)</option>
+								<option value="KCM">Kahramanmaraş (KCM)</option>
+								<option value="KRB">Karabük (KRB)</option>
+								<option value="KRM">Karaman (KRM)</option>
+								<option value="KSY">Kars (KSY)</option>
+								<option value="KAS">Kastamonu (KAS)</option>
+								<option value="KRK">Kırıkkale (KRK)</option>
+								<option value="KLR">Kırklareli (KLR)</option>
+								<option value="KSH">Kırşehir (KSH)</option>
+								<option value="KLS">Kilis (KLS)</option>
+								<option value="KOC">Kocaeli (KOC)</option>
+								<option value="KYA">Konya (KYA)</option>
+								<option value="KUT">Kütahya (KUT)</option>
+								<option value="MLX">Malatya (MLX)</option>
+								<option value="MNS">Manisa (MNS)</option>
+								<option value="MQM">Mardin (MQM)</option>
+								<option value="MER">Mersin (MER)</option>
+								<option value="DLM">Muğla (DLM)</option>
+								<option value="MSR">Muş (MSR)</option>
+								<option value="NAV">Nevşehir (NAV)</option>
+								<option value="NIG">Niğde (NIG)</option>
+								<option value="ORD">Ordu (ORD)</option>
+								<option value="OSM">Osmaniye (OSM)</option>
+								<option value="RZE">Rize (RZE)</option>
+								<option value="SAK">Sakarya (SAK)</option>
+								<option value="SZF">Samsun (SZF)</option>
+								<option value="SXZ">Siirt (SXZ)</option>
+								<option value="SIN">Sinop (SIN)</option>
+								<option value="VAS">Sivas (VAS)</option>
+								<option value="SFQ">Şanlıurfa (SFQ)</option>
+								<option value="NKT">Şırnak (NKT)</option>
+								<option value="TEK">Tekirdağ (TEK)</option>
+								<option value="TKT">Tokat (TKT)</option>
+								<option value="TZX">Trabzon (TZX)</option>
+								<option value="TUN">Tunceli (TUN)</option>
+								<option value="USK">Uşak (USK)</option>
+								<option value="VAN">Van (VAN)</option>
+								<option value="YLV">Yalova (YLV)</option>
+								<option value="YOZ">Yozgat (YOZ)</option>
+								<option value="ZON">Zonguldak (ZON)</option>
+							</select>
+						</div>
+
+						<!-- Varış Yeri -->
+						<div>
+							<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary text-lg">flight_land</span>
+									Varış Yeri
+								</span>
+							</label>
+							<select id="arrival-city" required
+								class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+								<option value="">Şehir seçin</option>
+								<option value="ADA">Adana (ADA)</option>
+								<option value="ADF">Adıyaman (ADF)</option>
+								<option value="AFY">Afyonkarahisar (AFY)</option>
+								<option value="AJI">Ağrı (AJI)</option>
+								<option value="ASR">Aksaray (ASR)</option>
+								<option value="MZH">Amasya (MZH)</option>
+								<option value="ESB">Ankara (ESB)</option>
+								<option value="AYT">Antalya (AYT)</option>
+								<option value="ARD">Ardahan (ARD)</option>
+								<option value="ART">Artvin (ART)</option>
+								<option value="AYD">Aydın (AYD)</option>
+								<option value="BZI">Balıkesir (BZI)</option>
+								<option value="BAR">Bartın (BAR)</option>
+								<option value="BAL">Batman (BAL)</option>
+								<option value="BAY">Bayburt (BAY)</option>
+								<option value="BIL">Bilecik (BIL)</option>
+								<option value="BGG">Bingöl (BGG)</option>
+								<option value="BTL">Bitlis (BTL)</option>
+								<option value="BOL">Bolu (BOL)</option>
+								<option value="BRD">Burdur (BRD)</option>
+								<option value="BTZ">Bursa (BTZ)</option>
+								<option value="CKZ">Çanakkale (CKZ)</option>
+								<option value="CKR">Çankırı (CKR)</option>
+								<option value="COR">Çorum (COR)</option>
+								<option value="DNZ">Denizli (DNZ)</option>
+								<option value="DIY">Diyarbakır (DIY)</option>
+								<option value="DZC">Düzce (DZC)</option>
+								<option value="EDI">Edirne (EDI)</option>
+								<option value="EZS">Elazığ (EZS)</option>
+								<option value="ERC">Erzincan (ERC)</option>
+								<option value="ERZ">Erzurum (ERZ)</option>
+								<option value="ESK">Eskişehir (ESK)</option>
+								<option value="GZT">Gaziantep (GZT)</option>
+								<option value="GIR">Giresun (GIR)</option>
+								<option value="GUM">Gümüşhane (GUM)</option>
+								<option value="HAK">Hakkari (HAK)</option>
+								<option value="HTY">Hatay (HTY)</option>
+								<option value="IGD">Iğdır (IGD)</option>
+								<option value="ISE">Isparta (ISE)</option>
+								<option value="IST">İstanbul (IST)</option>
+								<option value="ADB">İzmir (ADB)</option>
+								<option value="KCM">Kahramanmaraş (KCM)</option>
+								<option value="KRB">Karabük (KRB)</option>
+								<option value="KRM">Karaman (KRM)</option>
+								<option value="KSY">Kars (KSY)</option>
+								<option value="KAS">Kastamonu (KAS)</option>
+								<option value="KRK">Kırıkkale (KRK)</option>
+								<option value="KLR">Kırklareli (KLR)</option>
+								<option value="KSH">Kırşehir (KSH)</option>
+								<option value="KLS">Kilis (KLS)</option>
+								<option value="KOC">Kocaeli (KOC)</option>
+								<option value="KYA">Konya (KYA)</option>
+								<option value="KUT">Kütahya (KUT)</option>
+								<option value="MLX">Malatya (MLX)</option>
+								<option value="MNS">Manisa (MNS)</option>
+								<option value="MQM">Mardin (MQM)</option>
+								<option value="MER">Mersin (MER)</option>
+								<option value="DLM">Muğla (DLM)</option>
+								<option value="MSR">Muş (MSR)</option>
+								<option value="NAV">Nevşehir (NAV)</option>
+								<option value="NIG">Niğde (NIG)</option>
+								<option value="ORD">Ordu (ORD)</option>
+								<option value="OSM">Osmaniye (OSM)</option>
+								<option value="RZE">Rize (RZE)</option>
+								<option value="SAK">Sakarya (SAK)</option>
+								<option value="SZF">Samsun (SZF)</option>
+								<option value="SXZ">Siirt (SXZ)</option>
+								<option value="SIN">Sinop (SIN)</option>
+								<option value="VAS">Sivas (VAS)</option>
+								<option value="SFQ">Şanlıurfa (SFQ)</option>
+								<option value="NKT">Şırnak (NKT)</option>
+								<option value="TEK">Tekirdağ (TEK)</option>
+								<option value="TKT">Tokat (TKT)</option>
+								<option value="TZX">Trabzon (TZX)</option>
+								<option value="TUN">Tunceli (TUN)</option>
+								<option value="USK">Uşak (USK)</option>
+								<option value="VAN">Van (VAN)</option>
+								<option value="YLV">Yalova (YLV)</option>
+								<option value="YOZ">Yozgat (YOZ)</option>
+								<option value="ZON">Zonguldak (ZON)</option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Kalkış Tarihi -->
+					<div>
+						<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+							<span class="flex items-center gap-2">
+								<span class="material-symbols-outlined text-primary text-lg">event</span>
+								Kalkış Tarihi ve Saati
+							</span>
+						</label>
+						<input type="datetime-local" id="departure-datetime" required
+							class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<!-- Fiyat -->
+						<div>
+							<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary text-lg">payments</span>
+									Fiyat (₺)
+								</span>
+							</label>
+							<input type="number" id="flight-price" min="0" step="0.01" required
+								class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+						</div>
+
+						<!-- Uçak ID -->
+						<div>
+							<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary text-lg">flight</span>
+									Uçak ID
+								</span>
+							</label>
+							<input type="number" id="plane-id" min="1" required
+								class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+							<p class="mt-1 text-xs text-gray-500">Koltuk sayısı uçak bilgisinden otomatik gelecektir</p>
+						</div>
+					</div>
+
+					<!-- Buttons -->
+					<div class="flex justify-end gap-3 pt-4">
+						<button type="button" id="cancel-modal-btn"
+							class="rounded-lg border border-border-light dark:border-border-dark px-6 py-3 text-sm font-semibold text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-800">
+							İptal
+						</button>
+						<button type="submit"
+							class="flex items-center gap-2 rounded-lg bg-success px-6 py-3 text-sm font-semibold text-white hover:bg-success/90">
+							<span class="material-symbols-outlined text-base">check_circle</span>
+							Uçuş Oluştur
+						</button>
+					</div>
+				</form>
+
+				<!-- Loading State -->
+				<div id="modal-loading"
+					class="absolute inset-0 hidden items-center justify-center rounded-xl bg-white/90 dark:bg-background-dark/90">
+					<div class="text-center">
+						<div class="mb-4 flex justify-center">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent">
+							</div>
+						</div>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçuş oluşturuluyor...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

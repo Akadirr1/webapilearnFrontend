@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Profilim - BoardingPass</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="profile.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+		<!-- Background Image -->
+		<div class="absolute inset-0 z-0 opacity-5 dark:opacity-[0.02]">
+			<img class="h-full w-full object-cover" data-alt="Abstract white architectural lines on a dark background"
+				src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPsGJdHPt69l_K7CyQncvuf6nEiWlLtFMvzZbOyytg05dOP6YT70KYQxktOPcV_v5cTtbo6CLW20pcBLKeRm7aMWEhcIZz-MxJhvSdjNPLCcFxhVzpzpCiBHhFbX9g10hPXm9YgXptvJblQyX8pt90YTYZTlT-WshxHiArUcN4EMG2BRJVUEDmUOH4_5hOe6yNNw33FgoVfsvPX0FeN3W2RA4QUhNATrOHYwEwE_BFp94kIr3PjUXqcN31FB_ThG6keu4fmt-ZYnI" />
+		</div>
+
+		<!-- Header -->
+		<header
+			class="relative z-10 border-b border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="material-symbols-outlined text-primary text-4xl">flight_takeoff</span>
+						<span
+							class="text-2xl font-bold tracking-tight text-text-light dark:text-text-dark">BoardingPass</span>
+					</div>
+					<nav class="flex items-center gap-6">
+						<a href="code.html"
+							class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary">Uçuş
+							Ara</a>
+						<a href="profile.html"
+							class="text-sm font-medium text-primary border-b-2 border-primary">Profilim</a>
+						<button id="logout-btn"
+							class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">logout</span>
+							Logout
+						</button>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="relative z-10 flex-1 py-8 px-4 sm:px-6 lg:px-8">
+			<div class="mx-auto max-w-6xl">
+				<!-- Page Title -->
+				<div class="mb-8">
+					<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Profilim</h1>
+					<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Rezervasyon bilgilerinizi görüntüleyin</p>
+				</div>
+
+				<!-- User Info Card -->
+				<div
+					class="mb-8 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 shadow-lg backdrop-blur-sm">
+					<div class="flex items-center gap-4">
+						<div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+							<span class="material-symbols-outlined text-4xl">account_circle</span>
+						</div>
+						<div>
+							<h2 class="text-2xl font-bold text-text-light dark:text-text-dark" id="user-name">Hoş
+								Geldiniz</h2>
+							<p class="text-sm text-gray-600 dark:text-gray-400" id="user-email">Yükleniyor...</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Reservations Section -->
+				<div class="mb-6">
+					<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Aktif Rezervasyonlarım</h2>
+					<p class="mt-1 text-sm text-gray-600 dark:text-gray-400" id="reservation-count">Yükleniyor...</p>
+				</div>
+
+				<!-- Reservations Container -->
+				<div id="reservations-container" class="space-y-4">
+					<!-- Reservations will be loaded here -->
+				</div>
+
+				<!-- Loading State -->
+				<div id="loading-state" class="mt-8">
+					<div
+						class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+						<div class="flex justify-center mb-4">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent">
+							</div>
+						</div>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Rezervasyonlarınız
+							yükleniyor...</p>
+						<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Lütfen bekleyin</p>
+					</div>
+				</div>
+
+				<!-- No Reservations -->
+				<div id="no-reservations" class="mt-8 hidden">
+					<div
+						class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+						<span class="material-symbols-outlined text-6xl text-gray-400 mb-4">event_busy</span>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Henüz rezervasyonunuz yok
+						</p>
+						<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Uçuş aramaya başlayın ve ilk
+							rezervasyonunuzu oluşturun</p>
+						<a href="code.html"
+							class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">search</span>
+							Uçuş Ara
+						</a>
+					</div>
+				</div>
+
+				<!-- Error State -->
+				<div id="error-state" class="mt-8 hidden">
+					<div
+						class="rounded-xl border border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-900/20 p-12 text-center backdrop-blur-sm">
+						<span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+						<p class="text-lg font-medium text-red-700 dark:text-red-400">Rezervasyonlar yüklenirken hata
+							oluştu</p>
+						<p class="mt-2 text-sm text-red-600 dark:text-red-500" id="error-message">Lütfen tekrar
+							deneyin</p>
+						<button id="retry-btn"
+							class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">refresh</span>
+							Tekrar Dene
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer
+			class="relative z-10 border-t border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+				<p class="text-center text-sm text-gray-600 dark:text-gray-400">
+					© 2025 BoardingPass. All rights reserved.
+				</p>
+			</div>
+		</footer>
+	</div>
+</body>
+
+</html>

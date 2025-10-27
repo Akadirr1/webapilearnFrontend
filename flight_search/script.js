@@ -39,11 +39,78 @@ document.addEventListener('DOMContentLoaded', function () {
 	const resultsContainer = document.getElementById('results-container');
 	const resultsCount = document.getElementById('results-count');
 	const noResults = document.getElementById('no-results');
+	const userDisplayName = document.getElementById('user-display-name');
 
 	// Set minimum date to today
 	const today = new Date().toISOString().split('T')[0];
 	kalkisTarihiInput.setAttribute('min', today);
 	kalkisTarihiInput.value = today;
+
+	// Load user info
+	loadUserInfo();
+
+	// Logout functionality
+	const logoutBtn = document.getElementById('logout-btn');
+	if (logoutBtn) {
+		logoutBtn.addEventListener('click', handleLogout);
+	}
+
+	// Load User Info
+	async function loadUserInfo() {
+		try {
+			const response = await fetch('https://localhost:7100/api/Auth/CheckStatus', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include' // Cookie'yi göndermek için gerekli
+			});
+
+			if (response.ok) {
+				const userData = await response.json();
+				console.log('User Data:', userData);
+
+				if (userData.isLoggedIn) {
+					// Display user name
+					if (userData.ad && userData.soyad) {
+						userDisplayName.textContent = `${userData.ad} ${userData.soyad}`;
+					} else if (userData.ad) {
+						userDisplayName.textContent = userData.ad;
+					}
+				} else {
+					// Not logged in - redirect to login
+					window.location.href = '../login_screen/code.html';
+				}
+			} else if (response.status === 401) {
+				// Unauthorized - redirect to login
+				window.location.href = '../login_screen/code.html';
+			}
+		} catch (error) {
+			console.error('Kullanıcı bilgisi yükleme hatası:', error);
+		}
+	}
+
+	// Handle Logout
+	async function handleLogout() {
+		try {
+			const response = await fetch('https://localhost:7100/api/Auth/Logout', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include' // Cookie'yi göndermek için gerekli
+			});
+
+			// Başarılı ya da başarısız, her türlü login'e yönlendir
+			// Çünkü cookie silinmiş olacak
+			window.location.href = '../login_screen/code.html';
+
+		} catch (error) {
+			console.error('Logout hatası:', error);
+			// Hata olsa bile login'e yönlendir
+			window.location.href = '../login_screen/code.html';
+		}
+	}
 
 	// Form submission
 	form.addEventListener('submit', async function (e) {
@@ -90,7 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-				}
+				},
+				credentials: 'include' // Cookie'leri göndermek için gerekli
 			});
 
 			// Debug: Log response status
@@ -219,6 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		const bookBtn = card.querySelector('.book-flight-btn');
 		bookBtn.addEventListener('click', function () {
 			const flightId = this.getAttribute('data-flight-id');
+			console.log('Book button clicked, data-flight-id:', flightId);
+			console.log('Flight object:', flight);
 			bookFlight(flight, flightId);
 		});
 
@@ -227,11 +297,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// Book flight function
 	function bookFlight(flight, flightId) {
-		// You can implement booking logic here
-		// For now, just show an alert
-		alert(`Rezervasyon işlemi başlatılıyor...\n\nUçuş No: ${flight.ucusNo || flightId}\n${flight.kalkisYeri} → ${flight.varisYeri}\nFiyat: ${flight.fiyat} ₺`);
+		console.log('bookFlight called with:', { flight, flightId });
+		
+		// Save flight data to sessionStorage
+		sessionStorage.setItem('selectedFlight', JSON.stringify(flight));
 
-		// You can redirect to a booking page or open a modal
-		// window.location.href = `booking.html?flightId=${flightId}`;
+		// Redirect to seat selection page
+		console.log('Redirecting to:', `seat_selection.html?flightId=${flightId}`);
+		window.location.href = `seat_selection.html?flightId=${flightId}`;
 	}
 });

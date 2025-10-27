@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Koltuk Seçimi - BoardingPass</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="seat_selection.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+		<!-- Background Image -->
+		<div class="absolute inset-0 z-0 opacity-5 dark:opacity-[0.02]">
+			<img class="h-full w-full object-cover" data-alt="Abstract white architectural lines on a dark background"
+				src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPsGJdHPt69l_K7CyQncvuf6nEiWlLtFMvzZbOyytg05dOP6YT70KYQxktOPcV_v5cTtbo6CLW20pcBLKeRm7aMWEhcIZz-MxJhvSdjNPLCcFxhVzpzpCiBHhFbX9g10hPXm9YgXptvJblQyX8pt90YTYZTlT-WshxHiArUcN4EMG2BRJVUEDmUOH4_5hOe6yNNw33FgoVfsvPX0FeN3W2RA4QUhNATrOHYwEwE_BFp94kIr3PjUXqcN31FB_ThG6keu4fmt-ZYnI" />
+		</div>
+
+		<!-- Header -->
+		<header
+			class="relative z-10 border-b border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="material-symbols-outlined text-primary text-4xl">flight_takeoff</span>
+						<span
+							class="text-2xl font-bold tracking-tight text-text-light dark:text-text-dark">BoardingPass</span>
+					</div>
+					<nav class="flex items-center gap-6">
+						<a href="code.html"
+							class="flex items-center gap-2 text-sm font-medium text-text-light dark:text-text-dark hover:text-primary">
+							<span class="material-symbols-outlined text-base">arrow_back</span>
+							Geri Dön
+						</a>
+						<a href="profile.html"
+							class="text-sm font-medium text-text-light dark:text-text-dark hover:text-primary">Profilim</a>
+						<div class="flex items-center gap-2 text-sm">
+							<span class="material-symbols-outlined text-primary text-lg">account_circle</span>
+							<span id="user-display-name"
+								class="font-medium text-text-light dark:text-text-dark">Kullanıcı</span>
+						</div>
+						<button id="logout-btn"
+							class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">
+							<span class="material-symbols-outlined text-base">logout</span>
+							Logout
+						</button>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main Content -->
+		<main class="relative z-10 flex-1 py-8 px-4 sm:px-6 lg:px-8">
+			<div class="mx-auto max-w-5xl">
+				<!-- Page Title -->
+				<div class="mb-8 text-center">
+					<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Koltuk Seçimi
+					</h1>
+					<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Lütfen yerlerinizi seçin</p>
+				</div>
+
+				<!-- Flight Info -->
+				<div id="flight-info"
+					class="mb-8 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 shadow-lg backdrop-blur-sm">
+					<div class="flex items-center justify-between flex-wrap gap-4">
+						<div class="flex items-center gap-4">
+							<span class="material-symbols-outlined text-primary text-4xl">flight</span>
+							<div>
+								<p class="text-sm text-gray-500 dark:text-gray-400">Uçuş Bilgileri</p>
+								<p id="flight-route" class="text-xl font-bold text-text-light dark:text-text-dark">
+									Yükleniyor...</p>
+							</div>
+						</div>
+						<div class="text-right">
+							<p class="text-sm text-gray-500 dark:text-gray-400">Koltuk Başı Fiyat</p>
+							<p id="flight-price" class="text-2xl font-black text-primary">₺ 0</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Legend -->
+				<div class="mb-6 flex justify-center gap-6 flex-wrap">
+					<div class="flex items-center gap-2">
+						<div class="w-8 h-8 rounded border-2 border-primary bg-white dark:bg-gray-800"></div>
+						<span class="text-sm text-gray-600 dark:text-gray-400">Müsait</span>
+					</div>
+					<div class="flex items-center gap-2">
+						<div class="w-8 h-8 rounded border-2 border-primary bg-primary"></div>
+						<span class="text-sm text-gray-600 dark:text-gray-400">Seçildi</span>
+					</div>
+					<div class="flex items-center gap-2">
+						<div class="w-8 h-8 rounded border-2 border-gray-400 bg-gray-400"></div>
+						<span class="text-sm text-gray-600 dark:text-gray-400">Dolu</span>
+					</div>
+				</div>
+
+				<!-- Seat Selection -->
+				<div
+					class="mb-8 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-8 shadow-lg backdrop-blur-sm">
+					<!-- Airplane Front -->
+					<div class="mb-6 text-center">
+						<span class="material-symbols-outlined text-6xl text-primary">flight</span>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Uçağın Önü</p>
+					</div>
+
+					<!-- Seat Grid -->
+					<div class="max-w-2xl mx-auto">
+						<!-- Column Labels -->
+						<div class="flex justify-center mb-4">
+							<div class="grid grid-cols-6 gap-4 w-full max-w-md">
+								<div class="text-center font-bold text-primary">A</div>
+								<div class="text-center font-bold text-primary">B</div>
+								<div class="text-center font-bold text-primary">C</div>
+								<div class="w-8"></div>
+								<div class="text-center font-bold text-primary">D</div>
+								<div class="text-center font-bold text-primary">E</div>
+								<div class="text-center font-bold text-primary">F</div>
+							</div>
+						</div>
+
+						<!-- Seats -->
+						<div id="seats-container" class="space-y-3">
+							<!-- Seats will be generated by JavaScript -->
+						</div>
+					</div>
+
+					<!-- Airplane Back -->
+					<div class="mt-8 text-center">
+						<div class="h-16 w-full max-w-md mx-auto rounded-b-full border-2 border-primary opacity-50">
+						</div>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Uçağın Arkası</p>
+					</div>
+				</div>
+
+				<!-- Selected Seats Summary -->
+				<div
+					class="mb-8 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 shadow-lg backdrop-blur-sm">
+					<h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-4">Seçilen Koltuklar</h3>
+					<div class="flex items-center justify-between flex-wrap gap-4">
+						<div>
+							<p id="selected-seats-display" class="text-base text-gray-600 dark:text-gray-400">Henüz
+								koltuk seçilmedi</p>
+							<p id="selected-count" class="text-sm text-gray-500 dark:text-gray-500 mt-1">0 koltuk
+								seçildi</p>
+						</div>
+						<div class="text-right">
+							<p class="text-sm text-gray-500 dark:text-gray-400">Toplam Tutar</p>
+							<p id="total-price" class="text-3xl font-black text-primary">₺ 0</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Confirm Button -->
+				<div class="flex justify-center">
+					<button id="confirm-btn"
+						class="flex items-center gap-2 rounded-lg bg-primary px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed"
+						disabled>
+						<span class="material-symbols-outlined text-xl">check_circle</span>
+						Rezervasyonu Tamamla
+					</button>
+				</div>
+
+				<!-- Loading State -->
+				<div id="loading-state" class="mt-8 hidden">
+					<div
+						class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+						<div class="flex justify-center mb-4">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent">
+							</div>
+						</div>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Rezervasyon yapılıyor...</p>
+						<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Lütfen bekleyin</p>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Footer -->
+		<footer
+			class="relative z-10 border-t border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm">
+			<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+				<p class="text-center text-sm text-gray-600 dark:text-gray-400">
+					© 2025 BoardingPass. All rights reserved.
+				</p>
+			</div>
+		</footer>
+	</div>
+</body>
+
+</html>

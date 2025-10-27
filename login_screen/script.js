@@ -88,9 +88,37 @@ async function handleLogin(event) {
 			// Login successful - Backend cookie set etti
 			console.log('Login successful! Cookie received.');
 
-			// Başarılı giriş - dashboard'a yönlendir
-			alert('Login successful!');
-			// window.location.href = '/dashboard.html';
+			// Check user role and redirect accordingly
+			try {
+				const checkResponse = await fetch(`${API_BASE_URL}/Auth/CheckStatus`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					credentials: 'include'
+				});
+
+				if (checkResponse.ok) {
+					const userData = await checkResponse.json();
+					console.log('User Role:', userData.role);
+
+					// Redirect based on role
+					if (userData.role && userData.role.toLowerCase() === 'admin') {
+						// Admin user - redirect to admin panel
+						window.location.href = '../flight_search/admin.html';
+					} else {
+						// Customer user - redirect to flight search
+						window.location.href = '../flight_search/code.html';
+					}
+				} else {
+					// If check fails, default to flight search
+					window.location.href = '../flight_search/code.html';
+				}
+			} catch (error) {
+				console.error('Role check error:', error);
+				// If error, default to flight search
+				window.location.href = '../flight_search/code.html';
+			}
 
 		} else {
 			// Login failed
