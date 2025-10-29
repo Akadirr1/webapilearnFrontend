@@ -28,9 +28,6 @@ tailwind.config = {
 	},
 }
 
-// API Configuration
-const API_BASE_URL = 'https://apir.koufrontend.com/api';
-
 // Flight Search Handler
 document.addEventListener('DOMContentLoaded', function () {
 	const form = document.getElementById('flight-search-form');

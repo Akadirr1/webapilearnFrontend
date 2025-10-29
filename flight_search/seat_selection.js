@@ -28,9 +28,6 @@ tailwind.config = {
 	},
 }
 
-// API Configuration
-const API_BASE_URL = 'https://apir.koufrontend.com/api';
-
 // Seat Selection Handler
 document.addEventListener('DOMContentLoaded', function () {
 	// Get flight data from URL parameters

@@ -152,17 +152,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		try {
 			// Show loading state
-			const submitBtn = form.querySelector('button[type="submit"]');
-			const originalText = submitBtn.textContent;
-			submitBtn.disabled = true;
-			submitBtn.textContent = 'Kayıt oluşturuluyor...';
+		const submitBtn = form.querySelector('button[type="submit"]');
+		const originalText = submitBtn.textContent;
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Kayıt oluşturuluyor...';
 
-			// Make API request
-			const response = await fetch('https://apir.koufrontend.com/api/Auth/Register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+		// Make API request
+		const response = await fetch(`${API_BASE_URL}/Auth/Register`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 				body: JSON.stringify(requestData)
 			});
 
