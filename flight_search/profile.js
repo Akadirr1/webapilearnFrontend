@@ -42,6 +42,18 @@ document.addEventListener('DOMContentLoaded', function () {
 	const userName = document.getElementById('user-name');
 	const userEmail = document.getElementById('user-email');
 
+	// Password change elements
+	const changePasswordBtn = document.getElementById('change-password-btn');
+	const passwordModal = document.getElementById('password-modal');
+	const closeModalBtn = document.getElementById('close-modal-btn');
+	const cancelBtn = document.getElementById('cancel-btn');
+	const passwordForm = document.getElementById('password-change-form');
+	const oldPasswordInput = document.getElementById('old-password');
+	const newPasswordInput = document.getElementById('new-password');
+	const confirmPasswordInput = document.getElementById('confirm-password');
+	const passwordError = document.getElementById('password-error');
+	const passwordSuccess = document.getElementById('password-success');
+
 	// User data
 	let currentUser = null;
 
@@ -59,8 +71,149 @@ document.addEventListener('DOMContentLoaded', function () {
 			retryBtn.addEventListener('click', loadReservations);
 		}
 
+		// Password change modal
+		if (changePasswordBtn) {
+			changePasswordBtn.addEventListener('click', openPasswordModal);
+		}
+
+		if (closeModalBtn) {
+			closeModalBtn.addEventListener('click', closePasswordModal);
+		}
+
+		if (cancelBtn) {
+			cancelBtn.addEventListener('click', closePasswordModal);
+		}
+
+		if (passwordForm) {
+			passwordForm.addEventListener('submit', handlePasswordChange);
+		}
+
+		// Close modal on outside click
+		if (passwordModal) {
+			passwordModal.addEventListener('click', function (e) {
+				if (e.target === passwordModal) {
+					closePasswordModal();
+				}
+			});
+		}
+
 		// Load user info first, then reservations
 		loadUserInfo();
+	}
+
+	// Open Password Modal
+	function openPasswordModal() {
+		passwordModal.classList.remove('hidden');
+		passwordModal.classList.add('flex');
+		passwordForm.reset();
+		passwordError.classList.add('hidden');
+		passwordSuccess.classList.add('hidden');
+	}
+
+	// Close Password Modal
+	function closePasswordModal() {
+		passwordModal.classList.add('hidden');
+		passwordModal.classList.remove('flex');
+		passwordForm.reset();
+		passwordError.classList.add('hidden');
+		passwordSuccess.classList.add('hidden');
+	}
+
+	// Handle Password Change
+	async function handlePasswordChange(e) {
+		e.preventDefault();
+
+		// Hide previous messages
+		passwordError.classList.add('hidden');
+		passwordSuccess.classList.add('hidden');
+
+		const oldPassword = oldPasswordInput.value.trim();
+		const newPassword = newPasswordInput.value.trim();
+		const confirmPassword = confirmPasswordInput.value.trim();
+
+		// Validation
+		if (!oldPassword || !newPassword || !confirmPassword) {
+			showPasswordError('Lütfen tüm alanları doldurun.');
+			return;
+		}
+
+		if (newPassword !== confirmPassword) {
+			showPasswordError('Yeni şifreler eşleşmiyor.');
+			return;
+		}
+
+		if (newPassword.length < 6) {
+			showPasswordError('Yeni şifre en az 6 karakter olmalıdır.');
+			return;
+		}
+
+		if (oldPassword === newPassword) {
+			showPasswordError('Yeni şifre, eski şifre ile aynı olamaz.');
+			return;
+		}
+
+		// Disable submit button
+		const submitBtn = document.getElementById('submit-password-btn');
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Değiştiriliyor...';
+
+		try {
+			const response = await fetch('https://localhost:5000/api/Auth/Re-Password', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+				body: JSON.stringify({
+					oldPassword: oldPassword,
+					newPassword: newPassword
+				})
+			});
+
+			if (response.ok) {
+				showPasswordSuccess('Şifreniz başarıyla değiştirildi!');
+				passwordForm.reset();
+
+				// Close modal after 2 seconds
+				setTimeout(() => {
+					closePasswordModal();
+				}, 2000);
+			} else {
+				const errorText = await response.text();
+				console.error('Password change error:', errorText);
+
+				if (response.status === 400) {
+					showPasswordError('Mevcut şifre yanlış.');
+				} else if (response.status === 401) {
+					showPasswordError('Oturum süreniz dolmuş. Lütfen tekrar giriş yapın.');
+					setTimeout(() => {
+						window.location.href = '../login_screen/code.html';
+					}, 2000);
+				} else {
+					showPasswordError('Şifre değiştirilemedi. Lütfen tekrar deneyin.');
+				}
+			}
+		} catch (error) {
+			console.error('Password change error:', error);
+			showPasswordError('Bir hata oluştu. Lütfen internet bağlantınızı kontrol edin.');
+		} finally {
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'Değiştir';
+		}
+	}
+
+	// Show Password Error
+	function showPasswordError(message) {
+		passwordError.textContent = message;
+		passwordError.classList.remove('hidden');
+		passwordSuccess.classList.add('hidden');
+	}
+
+	// Show Password Success
+	function showPasswordSuccess(message) {
+		passwordSuccess.textContent = message;
+		passwordSuccess.classList.remove('hidden');
+		passwordError.classList.add('hidden');
 	}
 
 	// Load User Info

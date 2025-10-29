@@ -38,6 +38,11 @@
 							<span class="material-symbols-outlined text-base">add_circle</span>
 							Yeni Uçuş Oluştur
 						</button>
+						<button id="create-plane-btn"
+							class="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-white hover:bg-secondary/90">
+							<span class="material-symbols-outlined text-base">add_circle</span>
+							Yeni Uçak Ekle
+						</button>
 						<div class="flex items-center gap-2 text-sm">
 							<span class="material-symbols-outlined text-error text-lg">shield</span>
 							<span id="admin-display-name" class="font-bold text-error">Admin</span>
@@ -71,6 +76,13 @@
 								<span class="flex items-center gap-2">
 									<span class="material-symbols-outlined text-lg">flight</span>
 									Uçuşlar
+								</span>
+							</button>
+							<button id="tab-planes"
+								class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:border-gray-300">
+								<span class="flex items-center gap-2">
+									<span class="material-symbols-outlined text-lg">airplanemode_active</span>
+									Uçaklar
 								</span>
 							</button>
 						</nav>
@@ -325,6 +337,110 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Planes Content -->
+				<div id="content-planes" class="tab-content hidden">
+					<!-- Page Title -->
+					<div class="mb-8">
+						<h1 class="text-4xl font-black tracking-tighter text-text-light dark:text-text-dark">Tüm Uçaklar
+						</h1>
+						<p class="mt-2 text-lg text-gray-600 dark:text-gray-400">Sistemdeki tüm uçakları görüntüleyin ve
+							yönetin</p>
+					</div>
+
+					<!-- Plane Stats -->
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span
+									class="material-symbols-outlined text-secondary text-3xl">airplanemode_active</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Toplam Uçak</p>
+									<p id="planes-total-count"
+										class="text-2xl font-bold text-text-light dark:text-text-dark">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-success text-3xl">event_seat</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Toplam Kapasite</p>
+									<p id="planes-total-capacity" class="text-2xl font-bold text-success">0</p>
+								</div>
+							</div>
+						</div>
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm">
+							<div class="flex items-center gap-3">
+								<span class="material-symbols-outlined text-primary text-3xl">calculate</span>
+								<div>
+									<p class="text-xs text-gray-500 dark:text-gray-400">Ortalama Kapasite</p>
+									<p id="planes-avg-capacity" class="text-2xl font-bold text-primary">0</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Loading State -->
+					<div id="planes-loading" class="mt-8">
+						<div class="flex items-center justify-center p-12">
+							<div class="flex flex-col items-center gap-4">
+								<div
+									class="h-16 w-16 animate-spin rounded-full border-4 border-gray-300 border-t-secondary">
+								</div>
+								<p class="text-lg font-medium text-gray-600 dark:text-gray-400">Uçaklar yükleniyor...
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Planes List -->
+					<div id="planes-list" class="hidden">
+						<div class="mb-6">
+							<h2 class="text-2xl font-bold text-text-light dark:text-text-dark mb-4">Uçak Listesi</h2>
+							<p class="text-sm text-gray-600 dark:text-gray-400" id="planes-showing-count">Yükleniyor...
+							</p>
+						</div>
+						<div id="planes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+					</div>
+
+					<!-- No Planes -->
+					<div id="no-planes" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-12 text-center backdrop-blur-sm">
+							<span
+								class="material-symbols-outlined text-6xl text-gray-400 mb-4">airplanemode_active</span>
+							<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçak bulunamadı</p>
+							<p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Henüz sistemde kayıtlı uçak
+								bulunmuyor</p>
+							<button id="add-first-plane-btn"
+								class="mt-6 inline-flex items-center gap-2 rounded-lg bg-secondary px-6 py-3 text-sm font-semibold text-white hover:bg-secondary/90">
+								<span class="material-symbols-outlined text-base">add_circle</span>
+								İlk Uçağı Ekle
+							</button>
+						</div>
+					</div>
+
+					<!-- Planes Error State -->
+					<div id="planes-error-state" class="mt-8 hidden">
+						<div
+							class="rounded-xl border border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-900/20 p-12 text-center backdrop-blur-sm">
+							<span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
+							<p class="text-lg font-medium text-red-700 dark:text-red-400">Uçaklar yüklenirken hata
+								oluştu</p>
+							<p class="mt-2 text-sm text-red-600 dark:text-red-500" id="planes-error-message">Lütfen
+								tekrar deneyin</p>
+							<button id="planes-retry-btn"
+								class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90">
+								<span class="material-symbols-outlined text-base">refresh</span>
+								Tekrar Dene
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</main>
 
@@ -345,7 +461,9 @@
 				class="relative mx-4 w-full max-w-2xl rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-8 shadow-2xl">
 				<!-- Modal Header -->
 				<div class="mb-6 flex items-center justify-between">
-					<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">Yeni Uçuş Oluştur</h2>
+					<h2 class="text-2xl font-bold text-text-light dark:text-text-dark">
+						<span id="flight-modal-title">Yeni Uçuş Oluştur</span>
+					</h2>
 					<button id="close-modal-btn" class="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
 						<span class="material-symbols-outlined text-gray-600 dark:text-gray-400">close</span>
 					</button>
@@ -353,6 +471,13 @@
 
 				<!-- Modal Form -->
 				<form id="create-flight-form" class="space-y-4">
+					<!-- Hidden fields for update mode -->
+					<input type="hidden" id="flight-id-hidden" value="">
+					<input type="hidden" id="flight-original-departure" value="">
+					<input type="hidden" id="flight-original-arrival" value="">
+					<input type="hidden" id="flight-original-datetime" value="">
+					<input type="hidden" id="flight-original-price" value="">
+					<input type="hidden" id="flight-original-plane-id" value="">
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<!-- Kalkış Yeri -->
 						<div>
@@ -573,11 +698,13 @@
 							<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
 								<span class="flex items-center gap-2">
 									<span class="material-symbols-outlined text-primary text-lg">flight</span>
-									Uçak ID
+									Uçak Seçin
 								</span>
 							</label>
-							<input type="number" id="plane-id" min="1" required
+							<select id="plane-id" required
 								class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800">
+								<option value="">Uçak yükleniyor...</option>
+							</select>
 							<p class="mt-1 text-xs text-gray-500">Koltuk sayısı uçak bilgisinden otomatik gelecektir</p>
 						</div>
 					</div>
@@ -591,7 +718,7 @@
 						<button type="submit"
 							class="flex items-center gap-2 rounded-lg bg-success px-6 py-3 text-sm font-semibold text-white hover:bg-success/90">
 							<span class="material-symbols-outlined text-base">check_circle</span>
-							Uçuş Oluştur
+							<span id="flight-submit-btn-text">Uçuş Oluştur</span>
 						</button>
 					</div>
 				</form>
@@ -606,6 +733,92 @@
 							</div>
 						</div>
 						<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçuş oluşturuluyor...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Create Plane Modal -->
+		<div id="create-plane-modal"
+			class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+			<div
+				class="relative mx-4 w-full max-w-md rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-8 shadow-2xl">
+				<!-- Modal Header -->
+				<div class="mb-6 flex items-center justify-between">
+					<h2 id="plane-modal-title"
+						class="text-2xl font-bold text-text-light dark:text-text-dark flex items-center gap-2">
+						<span class="material-symbols-outlined text-secondary">flight</span>
+						<span id="plane-modal-title-text">Yeni Uçak Ekle</span>
+					</h2>
+					<button id="close-plane-modal-btn" class="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+						<span class="material-symbols-outlined text-gray-600 dark:text-gray-400">close</span>
+					</button>
+				</div>
+
+				<div id="plane-error"
+					class="mb-4 hidden rounded-lg bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-600 dark:text-red-400">
+				</div>
+				<div id="plane-success"
+					class="mb-4 hidden rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-sm text-green-600 dark:text-green-400">
+				</div>
+
+				<!-- Modal Form -->
+				<form id="create-plane-form" class="space-y-4">
+					<!-- Hidden fields for update mode -->
+					<input type="hidden" id="plane-id-hidden" value="">
+					<input type="hidden" id="plane-original-model" value="">
+					<input type="hidden" id="plane-original-capacity" value="">
+
+					<!-- Uçak Modeli -->
+					<div>
+						<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+							<span class="flex items-center gap-2">
+								<span class="material-symbols-outlined text-secondary text-lg">local_airport</span>
+								Uçak Modeli
+							</span>
+						</label>
+						<input type="text" id="plane-model" required placeholder="Örn: Boeing 737, Airbus A320"
+							class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-secondary focus:ring-secondary dark:border-border-dark dark:bg-gray-800">
+					</div>
+
+					<!-- Kapasite -->
+					<div>
+						<label class="block text-sm font-semibold text-text-light dark:text-text-dark mb-2">
+							<span class="flex items-center gap-2">
+								<span
+									class="material-symbols-outlined text-secondary text-lg">airline_seat_recline_normal</span>
+								Koltuk Kapasitesi
+							</span>
+						</label>
+						<input type="number" id="plane-capacity" min="1" max="1000" required placeholder="Örn: 180"
+							class="w-full rounded-lg border-border-light bg-background-light p-3 text-sm focus:border-secondary focus:ring-secondary dark:border-border-dark dark:bg-gray-800">
+						<p class="mt-1 text-xs text-gray-500">Toplam koltuk sayısı (1-1000 arası)</p>
+					</div>
+
+					<!-- Buttons -->
+					<div class="flex justify-end gap-3 pt-4">
+						<button type="button" id="cancel-plane-modal-btn"
+							class="rounded-lg border border-border-light dark:border-border-dark px-6 py-3 text-sm font-semibold text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-800">
+							İptal
+						</button>
+						<button type="submit" id="submit-plane-btn"
+							class="flex items-center gap-2 rounded-lg bg-secondary px-6 py-3 text-sm font-semibold text-white hover:bg-secondary/90">
+							<span class="material-symbols-outlined text-base">check_circle</span>
+							<span id="submit-plane-btn-text">Uçak Ekle</span>
+						</button>
+					</div>
+				</form>
+
+				<!-- Loading State -->
+				<div id="plane-modal-loading"
+					class="absolute inset-0 hidden items-center justify-center rounded-xl bg-white/90 dark:bg-background-dark/90">
+					<div class="text-center">
+						<div class="mb-4 flex justify-center">
+							<div
+								class="h-12 w-12 animate-spin rounded-full border-4 border-secondary border-t-transparent">
+							</div>
+						</div>
+						<p class="text-lg font-medium text-text-light dark:text-text-dark">Uçak ekleniyor...</p>
 					</div>
 				</div>
 			</div>

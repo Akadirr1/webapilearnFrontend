@@ -60,15 +60,23 @@
 				<!-- User Info Card -->
 				<div
 					class="mb-8 rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 shadow-lg backdrop-blur-sm">
-					<div class="flex items-center gap-4">
-						<div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-							<span class="material-symbols-outlined text-4xl">account_circle</span>
+					<div class="flex items-center justify-between">
+						<div class="flex items-center gap-4">
+							<div
+								class="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+								<span class="material-symbols-outlined text-4xl">account_circle</span>
+							</div>
+							<div>
+								<h2 class="text-2xl font-bold text-text-light dark:text-text-dark" id="user-name">Hoş
+									Geldiniz</h2>
+								<p class="text-sm text-gray-600 dark:text-gray-400" id="user-email">Yükleniyor...</p>
+							</div>
 						</div>
-						<div>
-							<h2 class="text-2xl font-bold text-text-light dark:text-text-dark" id="user-name">Hoş
-								Geldiniz</h2>
-							<p class="text-sm text-gray-600 dark:text-gray-400" id="user-email">Yükleniyor...</p>
-						</div>
+						<button id="change-password-btn"
+							class="flex items-center gap-2 rounded-lg border border-primary bg-white dark:bg-background-dark px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition">
+							<span class="material-symbols-outlined text-base">lock_reset</span>
+							Şifre Değiştir
+						</button>
 					</div>
 				</div>
 
@@ -144,6 +152,74 @@
 			</div>
 		</footer>
 	</div>
+
+	<!-- Password Change Modal -->
+	<div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+		<div
+			class="mx-4 w-full max-w-md rounded-xl border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-6 shadow-2xl">
+			<div class="mb-4 flex items-center justify-between">
+				<h3 class="text-xl font-bold text-text-light dark:text-text-dark flex items-center gap-2">
+					<span class="material-symbols-outlined">lock_reset</span>
+					Şifre Değiştir
+				</h3>
+				<button id="close-modal-btn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+					<span class="material-symbols-outlined">close</span>
+				</button>
+			</div>
+
+			<div id="password-error"
+				class="mb-4 hidden rounded-lg bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-600 dark:text-red-400">
+			</div>
+			<div id="password-success"
+				class="mb-4 hidden rounded-lg bg-green-50 dark:bg-green-900/20 p-3 text-sm text-green-600 dark:text-green-400">
+			</div>
+
+			<form id="password-change-form" class="space-y-4">
+				<div>
+					<label for="old-password"
+						class="mb-2 block text-sm font-semibold text-text-light dark:text-text-dark">
+						Mevcut Şifre
+					</label>
+					<input type="password" id="old-password" required
+						class="w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark px-4 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+						placeholder="Mevcut şifrenizi girin">
+				</div>
+
+				<div>
+					<label for="new-password"
+						class="mb-2 block text-sm font-semibold text-text-light dark:text-text-dark">
+						Yeni Şifre
+					</label>
+					<input type="password" id="new-password" required
+						class="w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark px-4 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+						placeholder="Yeni şifrenizi girin">
+				</div>
+
+				<div>
+					<label for="confirm-password"
+						class="mb-2 block text-sm font-semibold text-text-light dark:text-text-dark">
+						Yeni Şifre (Tekrar)
+					</label>
+					<input type="password" id="confirm-password" required
+						class="w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark px-4 py-2 text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+						placeholder="Yeni şifrenizi tekrar girin">
+				</div>
+
+				<div class="flex gap-3 pt-2">
+					<button type="button" id="cancel-btn"
+						class="flex-1 rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark px-4 py-2 font-semibold text-text-light dark:text-text-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+						İptal
+					</button>
+					<button type="submit" id="submit-password-btn"
+						class="flex-1 rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-primary/90 transition">
+						Değiştir
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script src="profile.js"></script>
 </body>
 
 </html>

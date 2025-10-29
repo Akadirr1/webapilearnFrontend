@@ -152,28 +152,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		try {
 			// Show loading state
-		const submitBtn = form.querySelector('button[type="submit"]');
-		const originalText = submitBtn.textContent;
-		submitBtn.disabled = true;
-		submitBtn.textContent = 'Kayıt oluşturuluyor...';
+			const submitBtn = form.querySelector('button[type="submit"]');
+			const originalText = submitBtn.textContent;
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Kayıt oluşturuluyor...';
 
-		// Make API request
-		const response = await fetch(`${API_BASE_URL}/Auth/Register`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
+			// Make API request
+			const response = await fetch(`${API_BASE_URL}/Auth/Register`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 				body: JSON.stringify(requestData)
 			});
 
 			if (response.ok) {
-				const data = await response.json();
+				// Başarılı kayıt
 				alert('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...');
 				// Redirect to login page
 				window.location.href = '../login_screen/code.html';
 			} else {
-				const errorData = await response.json();
-				alert('Kayıt başarısız: ' + (errorData.message || 'Bir hata oluştu.'));
+				// Hata durumu - hem JSON hem text yanıtları işle
+				const contentType = response.headers.get('content-type');
+				let errorMessage = 'Bir hata oluştu.';
+
+				try {
+					if (contentType && contentType.includes('application/json')) {
+						// JSON yanıt
+						const errorData = await response.json();
+						errorMessage = errorData.message || errorData.error || 'Kayıt başarısız oldu.';
+					} else {
+						// Text yanıt
+						const errorText = await response.text();
+						errorMessage = errorText || 'Kayıt başarısız oldu.';
+					}
+				} catch (parseError) {
+					// Parse hatası olursa varsayılan mesajı kullan
+					console.error('Hata mesajı parse edilemedi:', parseError);
+					errorMessage = 'Kayıt başarısız oldu.';
+				}
+
+				alert('Kayıt başarısız: ' + errorMessage);
 			}
 		} catch (error) {
 			console.error('Kayıt hatası:', error);
