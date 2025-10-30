@@ -540,10 +540,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// Reset form
 		createFlightForm.reset();
-		
+
 		// Clear hidden field (create mode)
 		document.getElementById('flight-id-hidden').value = '';
-		
+
 		// Set modal title and button text for create mode
 		document.getElementById('flight-modal-title').textContent = 'Yeni Uçuş Oluştur';
 		document.getElementById('flight-submit-btn-text').textContent = 'Uçuş Oluştur';
@@ -559,12 +559,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Load planes for dropdown
 		loadPlanesForDropdown();
 	}
-	
+
 	// Open Modal for Update
 	function openFlightModalForUpdate(flightId, departure, arrival, datetime, price, planeId) {
 		createFlightModal.classList.remove('hidden');
 		createFlightModal.classList.add('flex');
-		
+
 		// Normalize datetime to match input format (remove seconds and milliseconds)
 		let normalizedDatetime = datetime;
 		if (datetime) {
@@ -574,21 +574,21 @@ document.addEventListener('DOMContentLoaded', function () {
 				normalizedDatetime = date.toISOString().slice(0, 16);
 			}
 		}
-		
+
 		// Set hidden field (update mode)
 		document.getElementById('flight-id-hidden').value = flightId;
-		
+
 		// Store original values for comparison (use normalized datetime)
 		document.getElementById('flight-original-departure').value = departure;
 		document.getElementById('flight-original-arrival').value = arrival;
 		document.getElementById('flight-original-datetime').value = normalizedDatetime;
 		document.getElementById('flight-original-price').value = price;
 		document.getElementById('flight-original-plane-id').value = planeId;
-		
+
 		// Set modal title and button text for update mode
 		document.getElementById('flight-modal-title').textContent = 'Uçuş Güncelle';
 		document.getElementById('flight-submit-btn-text').textContent = 'Güncelle';
-		
+
 		// Load planes first, then populate fields
 		loadPlanesForDropdown().then(() => {
 			// Populate form fields (use normalized datetime)
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Handle Create Flight
 	async function handleCreateFlight(e) {
 		e.preventDefault();
-		
+
 		// Check if we're in update mode
 		const flightId = document.getElementById('flight-id-hidden').value;
 		const isUpdateMode = flightId !== '';
@@ -630,10 +630,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			const originalDatetime = document.getElementById('flight-original-datetime').value;
 			const originalPrice = parseFloat(document.getElementById('flight-original-price').value);
 			const originalPlaneId = parseInt(document.getElementById('flight-original-plane-id').value);
-			
+
 			// Check price equality with small epsilon for float comparison
 			const priceChanged = Math.abs(fiyat - originalPrice) > 0.001;
-			
+
 			// Debug: Log comparison values
 			console.log('Comparison Check:', {
 				current: { kalkisYeri, varisYeri, kalkisTarihi, fiyat, ucakId },
@@ -646,12 +646,12 @@ document.addEventListener('DOMContentLoaded', function () {
 					planeId: ucakId === originalPlaneId
 				}
 			});
-			
+
 			// Check if nothing changed
-			if (kalkisYeri === originalDeparture && 
-				varisYeri === originalArrival && 
-				kalkisTarihi === originalDatetime && 
-				!priceChanged && 
+			if (kalkisYeri === originalDeparture &&
+				varisYeri === originalArrival &&
+				kalkisTarihi === originalDatetime &&
+				!priceChanged &&
 				ucakId === originalPlaneId) {
 				alert('Hiçbir değişiklik yapılmadı. Lütfen değiştirmek istediğiniz alanları güncelleyin.');
 				return;
@@ -691,7 +691,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		try {
 			// Determine URL and method based on mode
-			const url = isUpdateMode 
+			const url = isUpdateMode
 				? `${API_BASE_URL}/Ucus/${flightId}`
 				: `${API_BASE_URL}/Ucus`;
 			const method = isUpdateMode ? 'PATCH' : 'POST';
@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				const successMessage = isUpdateMode
 					? `Uçuş başarıyla güncellendi!\n\n${kalkisYeri} → ${varisYeri}\nTarih: ${new Date(kalkisTarihi).toLocaleString('tr-TR')}\nFiyat: ₺${fiyat}`
 					: `Uçuş başarıyla oluşturuldu!\n\n${kalkisYeri} → ${varisYeri}\nTarih: ${new Date(kalkisTarihi).toLocaleString('tr-TR')}\nFiyat: ₺${fiyat}`;
-				
+
 				alert(successMessage);
 
 				// Close modal
@@ -758,6 +758,36 @@ document.addEventListener('DOMContentLoaded', function () {
 		} catch (error) {
 			console.error('Logout hatası:', error);
 			window.location.href = '../login_screen/code.html';
+		}
+	}
+
+	// Handle Delete Flight
+	async function handleDeleteFlight(flightId, flightRoute) {
+		// Confirm deletion
+		const confirmed = confirm(`${flightRoute} uçuşunu silmek istediğinizden emin misiniz?\n\nBu işlem geri alınamaz!`);
+
+		if (!confirmed) {
+			return;
+		}
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Ucus/${flightId}`, {
+				method: 'DELETE',
+				credentials: 'include'
+			});
+
+			if (response.ok) {
+				// Success - reload flights
+				alert('Uçuş başarıyla silindi!');
+				await loadFlights();
+			} else {
+				const errorText = await response.text();
+				console.error('Delete Error:', errorText);
+				throw new Error(errorText || 'Uçuş silinemedi');
+			}
+		} catch (error) {
+			console.error('Uçuş silme hatası:', error);
+			alert('Uçuş silinirken bir hata oluştu.\n\nHata: ' + error.message);
 		}
 	}
 
@@ -954,6 +984,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						<span class="material-symbols-outlined text-sm align-middle">connecting_airports</span>
 						Uçak: ${flight.ucakId}
 					</div>
+				<div class="flex gap-2">
 					<button class="update-flight-btn mt-2 flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary/90 transition"
 						data-flight-id="${flight.id}"
 						data-flight-departure="${flight.kalkisYeri}"
@@ -964,14 +995,21 @@ document.addEventListener('DOMContentLoaded', function () {
 						<span class="material-symbols-outlined text-sm">edit</span>
 						Güncelle
 					</button>
+					<button class="delete-flight-btn mt-2 flex items-center gap-1 rounded-lg bg-error px-3 py-1.5 text-xs font-semibold text-white hover:bg-error/90 transition"
+						data-flight-id="${flight.id}"
+						data-flight-route="${flight.kalkisYeri} → ${flight.varisYeri}">
+						<span class="material-symbols-outlined text-sm">delete</span>
+						Sil
+					</button>
 				</div>
 			</div>
-		`;
+		</div>
+	`;
 
 		// Add click event to update button
 		const updateBtn = card.querySelector('.update-flight-btn');
 		if (updateBtn) {
-			updateBtn.addEventListener('click', function() {
+			updateBtn.addEventListener('click', function () {
 				const flightId = parseInt(this.getAttribute('data-flight-id'));
 				const departure = this.getAttribute('data-flight-departure');
 				const arrival = this.getAttribute('data-flight-arrival');
@@ -982,7 +1020,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 		}
 
-		return card;
+		// Add click event to delete button
+		const deleteBtn = card.querySelector('.delete-flight-btn');
+		if (deleteBtn) {
+			deleteBtn.addEventListener('click', function () {
+				const flightId = parseInt(this.getAttribute('data-flight-id'));
+				const flightRoute = this.getAttribute('data-flight-route');
+				handleDeleteFlight(flightId, flightRoute);
+			});
+		} return card;
 	}
 
 	// Update Flight Stats
@@ -1031,11 +1077,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		planeIdHidden.value = planeId;
 		planeModelInput.value = planeModel;
 		planeCapacityInput.value = planeCapacity;
-		
+
 		// Store original values for comparison
 		document.getElementById('plane-original-model').value = planeModel;
 		document.getElementById('plane-original-capacity').value = planeCapacity;
-		
+
 		planeModalTitle.textContent = 'Uçak Güncelle';
 		submitPlaneBtnText.textContent = 'Güncelle';
 	}
@@ -1080,7 +1126,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (isUpdateMode) {
 			const originalModel = document.getElementById('plane-original-model').value;
 			const originalCapacity = parseInt(document.getElementById('plane-original-capacity').value);
-			
+
 			// Debug: Log comparison values
 			console.log('Plane Comparison Check:', {
 				current: { model, kapasite },
@@ -1090,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					capacity: kapasite === originalCapacity
 				}
 			});
-			
+
 			if (model === originalModel && kapasite === originalCapacity) {
 				showPlaneError('Hiçbir değişiklik yapılmadı. Lütfen değiştirmek istediğiniz alanları güncelleyin.');
 				return;

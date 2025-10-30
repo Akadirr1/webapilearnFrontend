@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	function init() {
 		console.log('seat_selection.js init - flightId from URL:', flightId);
 		console.log('URL search params:', window.location.search);
-		
 		if (!flightId) {
 			alert('Uçuş bilgisi bulunamadı!');
 			window.location.href = 'code.html';
@@ -192,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			occupiedSeats = flight.doluKoltuklar || [];
 			// Convert string array to number array
 			occupiedSeats = occupiedSeats.map(seat => parseInt(seat));
-			
 			console.log(`Boş Koltuk: ${flight.bosKoltukSayisi}, Dolu Koltuklar:`, occupiedSeats, `Toplam: ${totalSeats}`);
 
 			// Hide loading and show seats

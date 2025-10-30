@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Book flight function
 	function bookFlight(flight, flightId) {
 		console.log('bookFlight called with:', { flight, flightId });
-		
+
 		// Save flight data to sessionStorage
 		sessionStorage.setItem('selectedFlight', JSON.stringify(flight));
 
