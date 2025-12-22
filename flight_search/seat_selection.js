@@ -45,12 +45,22 @@ document.addEventListener('DOMContentLoaded', function () {
 	const flightPrice = document.getElementById('flight-price');
 	const loadingState = document.getElementById('loading-state');
 	const userDisplayName = document.getElementById('user-display-name');
+	const couponInput = document.getElementById('coupon-input');
+	const applyCouponBtn = document.getElementById('apply-coupon-btn');
+	const removeCouponBtn = document.getElementById('remove-coupon-btn');
+	const couponMessage = document.getElementById('coupon-message');
+	const discountInfo = document.getElementById('discount-info');
+	const discountRate = document.getElementById('discount-rate');
+	const discountAmount = document.getElementById('discount-amount');
+	const discountedTotal = document.getElementById('discounted-total');
 
 	// State
 	let selectedSeats = []; // Array of seat objects: {row, col, seatNumber, label}
 	let occupiedSeats = []; // Array of occupied seat numbers
 	const columns = ['A', 'B', 'C', 'D', 'E', 'F'];
 	const pricePerSeat = flightData ? parseFloat(flightData.fiyat) : 0;
+	let appliedCoupon = null; // Stores {code, discountRate}
+	let discountPercentage = 0;
 
 	// Dynamic values that will be set from API
 	let totalSeats = 0;
@@ -91,6 +101,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		// Add confirm button listener
 		confirmBtn.addEventListener('click', confirmReservation);
+
+		// Add coupon button listeners
+		applyCouponBtn.addEventListener('click', applyCoupon);
+		removeCouponBtn.addEventListener('click', removeCoupon);
+
+		// Enable apply button when user types
+		couponInput.addEventListener('input', function () {
+			applyCouponBtn.disabled = this.value.trim().length === 0;
+		});
 	}
 
 	// Load User Info
@@ -313,6 +332,118 @@ document.addEventListener('DOMContentLoaded', function () {
 			totalPriceDisplay.textContent = `₺ ${formatPrice(totalPrice)}`;
 			confirmBtn.disabled = false;
 		}
+
+		// Update discount if coupon is applied
+		if (appliedCoupon) {
+			updateDiscountDisplay();
+		}
+	}
+
+	// Apply coupon
+	async function applyCoupon() {
+		const couponCode = couponInput.value.trim();
+
+		if (!couponCode) {
+			showCouponMessage('Lütfen bir kupon kodu girin.', 'error');
+			return;
+		}
+
+		// Show loading
+		applyCouponBtn.disabled = true;
+		applyCouponBtn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">sync</span> Kontrol ediliyor...';
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Kupon?kpnstr=${encodeURIComponent(couponCode)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include'
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+				console.log('Kupon Sonucu:', result);
+
+				// Extract discount rate from response
+				// Assuming the API returns {result: {indirimOrani: 10}} or similar
+				const discountRate = result.result?.indirimOrani || result.indirimOrani || 0;
+
+				if (discountRate > 0) {
+					appliedCoupon = {
+						code: couponCode,
+						discountRate: discountRate
+					};
+					discountPercentage = discountRate;
+
+					showCouponMessage(`Kupon başarıyla uygulandı! %${discountRate} indirim kazandınız.`, 'success');
+					discountInfo.classList.remove('hidden');
+					couponInput.disabled = true;
+					applyCouponBtn.classList.add('hidden');
+
+					updateDiscountDisplay();
+				} else {
+					showCouponMessage('Bu kupon geçersiz veya süresi dolmuş.', 'error');
+				}
+			} else {
+				const errorText = await response.text();
+				console.error('Kupon API Hatası:', errorText);
+				showCouponMessage('Kupon doğrulanırken bir hata oluştu.', 'error');
+			}
+		} catch (error) {
+			console.error('Kupon Uygulama Hatası:', error);
+			showCouponMessage('Kupon kontrolü sırasında bir hata oluştu.', 'error');
+		} finally {
+			applyCouponBtn.disabled = false;
+			applyCouponBtn.innerHTML = '<span class="material-symbols-outlined text-base">local_offer</span> Uygula';
+		}
+	}
+
+	// Remove coupon
+	function removeCoupon() {
+		appliedCoupon = null;
+		discountPercentage = 0;
+		couponInput.value = '';
+		couponInput.disabled = false;
+		discountInfo.classList.add('hidden');
+		applyCouponBtn.classList.remove('hidden');
+		couponMessage.classList.add('hidden');
+
+		updateSummary();
+	}
+
+	// Update discount display
+	function updateDiscountDisplay() {
+		if (!appliedCoupon || selectedSeats.length === 0) {
+			return;
+		}
+
+		const totalPrice = selectedSeats.length * pricePerSeat;
+		const discountAmountValue = (totalPrice * discountPercentage) / 100;
+		const finalPrice = totalPrice - discountAmountValue;
+
+		discountRate.textContent = `%${discountPercentage}`;
+		discountAmount.textContent = `₺ ${formatPrice(discountAmountValue)}`;
+		discountedTotal.textContent = `₺ ${formatPrice(finalPrice)}`;
+	}
+
+	// Show coupon message
+	function showCouponMessage(message, type) {
+		couponMessage.textContent = message;
+		couponMessage.classList.remove('hidden', 'text-success', 'text-error');
+
+		if (type === 'success') {
+			couponMessage.classList.add('text-success');
+		} else if (type === 'error') {
+			couponMessage.classList.add('text-error');
+		}
+
+		// Auto-hide after 5 seconds
+		setTimeout(() => {
+			if (type === 'error') {
+				couponMessage.classList.add('hidden');
+			}
+		}, 5000);
 	}
 
 	// Confirm reservation
@@ -354,8 +485,19 @@ document.addEventListener('DOMContentLoaded', function () {
 				// Hide loading
 				loadingState.classList.add('hidden');
 
+				// Calculate final price
+				const totalPrice = selectedSeats.length * pricePerSeat;
+				let finalPrice = totalPrice;
+				let discountText = '';
+
+				if (appliedCoupon) {
+					const discountAmountValue = (totalPrice * discountPercentage) / 100;
+					finalPrice = totalPrice - discountAmountValue;
+					discountText = `\nİndirim (%${discountPercentage}): -₺ ${formatPrice(discountAmountValue)}`;
+				}
+
 				// Show success message
-				alert(`Rezervasyonunuz başarıyla oluşturuldu!\n\nUçuş: ${flightData.kalkisYeri} → ${flightData.varisYeri}\nKoltuklar: ${selectedSeats.map(s => s.seatLabel).join(', ')}\nToplam: ₺ ${formatPrice(selectedSeats.length * pricePerSeat)}`);
+				alert(`Rezervasyonunuz başarıyla oluşturuldu!\n\nUçuş: ${flightData.kalkisYeri} → ${flightData.varisYeri}\nKoltuklar: ${selectedSeats.map(s => s.seatLabel).join(', ')}\nAra Toplam: ₺ ${formatPrice(totalPrice)}${discountText}\nÖdenecek Tutar: ₺ ${formatPrice(finalPrice)}`);
 
 				// Clear storage and redirect
 				clearFlightDataFromStorage();

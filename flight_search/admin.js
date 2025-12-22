@@ -111,11 +111,29 @@ document.addEventListener('DOMContentLoaded', function () {
 	const planesShowingCount = document.getElementById('planes-showing-count');
 	const addFirstPlaneBtn = document.getElementById('add-first-plane-btn');
 
+	// Coupons elements
+	const tabCoupons = document.getElementById('tab-coupons');
+	const contentCoupons = document.getElementById('content-coupons');
+	const couponsLoading = document.getElementById('coupons-loading');
+	const couponsList = document.getElementById('coupons-list');
+	const couponsContainer = document.getElementById('coupons-container');
+	const noCoupons = document.getElementById('no-coupons');
+	const couponsErrorState = document.getElementById('coupons-error-state');
+	const couponsErrorMessage = document.getElementById('coupons-error-message');
+	const couponsRetryBtn = document.getElementById('coupons-retry-btn');
+	const couponsTotalCount = document.getElementById('coupons-total-count');
+	const couponsActiveCount = document.getElementById('coupons-active-count');
+	const couponsAvgDiscount = document.getElementById('coupons-avg-discount');
+	const couponsShowingCount = document.getElementById('coupons-showing-count');
+	const createCouponBtn = document.getElementById('create-coupon-btn');
+	const newCouponValue = document.getElementById('new-coupon-value');
+
 	// Data
 	let allReservations = [];
 	let filteredReservations = [];
 	let allFlights = [];
 	let allPlanes = [];
+	let allCoupons = [];
 	let currentTab = 'reservations';
 
 	// Initialize
@@ -217,6 +235,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			tabPlanes.addEventListener('click', () => switchTab('planes'));
 		}
 
+		if (tabCoupons) {
+			tabCoupons.addEventListener('click', () => switchTab('coupons'));
+		}
+
 		// Flights retry button
 		if (flightsRetryBtn) {
 			flightsRetryBtn.addEventListener('click', loadFlights);
@@ -230,6 +252,16 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Add first plane button
 		if (addFirstPlaneBtn) {
 			addFirstPlaneBtn.addEventListener('click', openPlaneModal);
+		}
+
+		// Coupons retry button
+		if (couponsRetryBtn) {
+			couponsRetryBtn.addEventListener('click', loadCoupons);
+		}
+
+		// Create coupon button
+		if (createCouponBtn) {
+			createCouponBtn.addEventListener('click', handleCreateCoupon);
 		}
 
 		// Enter key on filters
@@ -802,11 +834,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		tabFlights.classList.add('border-transparent', 'text-gray-500');
 		tabPlanes.classList.remove('active', 'border-primary', 'text-primary');
 		tabPlanes.classList.add('border-transparent', 'text-gray-500');
+		tabCoupons.classList.remove('active', 'border-primary', 'text-primary');
+		tabCoupons.classList.add('border-transparent', 'text-gray-500');
 
 		// Hide all content
 		contentReservations.classList.add('hidden');
 		contentFlights.classList.add('hidden');
 		contentPlanes.classList.add('hidden');
+		contentCoupons.classList.add('hidden');
 
 		// Update tab buttons and show content
 		if (tab === 'reservations') {
@@ -830,6 +865,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			// Load planes if not loaded yet
 			if (allPlanes.length === 0) {
 				loadPlanes();
+			}
+		} else if (tab === 'coupons') {
+			tabCoupons.classList.add('active', 'border-primary', 'text-primary');
+			tabCoupons.classList.remove('border-transparent', 'text-gray-500');
+			contentCoupons.classList.remove('hidden');
+
+			// Load coupons if not loaded yet
+			if (allCoupons.length === 0) {
+				loadCoupons();
 			}
 		}
 	}
@@ -1508,6 +1552,167 @@ document.addEventListener('DOMContentLoaded', function () {
 		planesTotalCount.textContent = totalPlanes;
 		planesTotalCapacity.textContent = totalCapacity.toLocaleString('tr-TR');
 		planesAvgCapacity.textContent = avgCapacity.toLocaleString('tr-TR');
+	}
+
+	// Load Coupons
+	async function loadCoupons() {
+		// Show loading
+		couponsLoading.classList.remove('hidden');
+		couponsList.classList.add('hidden');
+		noCoupons.classList.add('hidden');
+		couponsErrorState.classList.add('hidden');
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Kupon/getAllKupons`, {
+				method: 'GET',
+				credentials: 'include'
+			});
+
+			console.log('Coupons Response Status:', response.status);
+
+			if (!response.ok) {
+				throw new Error('Kuponlar yüklenemedi');
+			}
+
+			const coupons = await response.json();
+			console.log('Coupons loaded:', coupons);
+
+			allCoupons = coupons;
+
+			// Hide loading
+			couponsLoading.classList.add('hidden');
+
+			// Show coupons or no coupons message
+			if (coupons.length === 0) {
+				noCoupons.classList.remove('hidden');
+			} else {
+				couponsList.classList.remove('hidden');
+				renderCoupons(coupons);
+			}
+
+			// Update stats
+			updateCouponStats(coupons);
+
+		} catch (error) {
+			console.error('Load coupons error:', error);
+			couponsLoading.classList.add('hidden');
+			couponsErrorState.classList.remove('hidden');
+			couponsErrorMessage.textContent = error.message || 'Bilinmeyen bir hata oluştu';
+		}
+	}
+
+	// Render Coupons
+	function renderCoupons(coupons) {
+		couponsContainer.innerHTML = '';
+		couponsShowingCount.textContent = `${coupons.length} kupon gösteriliyor`;
+
+		coupons.forEach(coupon => {
+			const couponCard = document.createElement('div');
+			couponCard.className = 'rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm hover:shadow-lg transition-shadow';
+			
+			couponCard.innerHTML = `
+				<div class="flex items-start justify-between mb-4">
+					<div class="flex items-center gap-3">
+						<span class="material-symbols-outlined text-secondary text-3xl">local_activity</span>
+						<div>
+							<p class="text-sm text-gray-500 dark:text-gray-400">Kupon Kodu</p>
+							<p class="text-lg font-bold text-text-light dark:text-text-dark">${coupon.value}</p>
+						</div>
+					</div>
+					<span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold bg-success/10 text-success">
+						<span class="material-symbols-outlined text-sm">verified</span>
+						Aktif
+					</span>
+				</div>
+				
+				<div class="space-y-3">
+					<div class="flex items-center gap-2 text-sm">
+						<span class="material-symbols-outlined text-primary text-lg">sell</span>
+						<span class="text-gray-600 dark:text-gray-400">ID:</span>
+						<span class="font-semibold text-text-light dark:text-text-dark">#${coupon.id}</span>
+					</div>
+					<div class="flex items-center gap-2 text-sm">
+						<span class="material-symbols-outlined text-success text-lg">percent</span>
+						<span class="text-gray-600 dark:text-gray-400">İndirim Oranı:</span>
+						<span class="font-bold text-success text-lg">%${coupon.indirimOrani}</span>
+					</div>
+				</div>
+			`;
+			
+			couponsContainer.appendChild(couponCard);
+		});
+	}
+
+	// Update Coupon Stats
+	function updateCouponStats(coupons) {
+		const totalCoupons = coupons.length;
+		const activeCoupons = totalCoupons; // Tüm kuponlar aktif
+		
+		let totalDiscount = 0;
+		coupons.forEach(coupon => {
+			totalDiscount += coupon.indirimOrani || 0;
+		});
+
+		const avgDiscount = totalCoupons > 0 ? Math.round(totalDiscount / totalCoupons) : 0;
+
+		couponsTotalCount.textContent = totalCoupons;
+		couponsActiveCount.textContent = activeCoupons;
+		couponsAvgDiscount.textContent = `%${avgDiscount}`;
+	}
+
+	// Handle Create Coupon
+	async function handleCreateCoupon() {
+		const couponValue = parseInt(newCouponValue.value);
+
+		// Validation
+		if (!couponValue || couponValue < 1 || couponValue > 100) {
+			alert('❌ Lütfen 1-100 arası bir değer girin');
+			return;
+		}
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Kupon`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+				body: JSON.stringify(couponValue)
+			});
+
+			console.log('Create coupon response:', response.status);
+
+			if (response.ok) {
+				const createdCoupon = await response.json();
+				console.log('Coupon created:', createdCoupon);
+				
+				alert('✅ Kupon başarıyla oluşturuldu!');
+				newCouponValue.value = '';
+				
+				// Reload coupons
+				loadCoupons();
+			} else {
+				let errorMessage = 'Kupon oluşturulamadı';
+				const contentType = response.headers.get('content-type');
+
+				try {
+					if (contentType && contentType.includes('application/json')) {
+						const errorData = await response.json();
+						errorMessage = errorData.message || errorData.error || errorMessage;
+					} else {
+						const errorText = await response.text();
+						errorMessage = errorText || errorMessage;
+					}
+				} catch (parseError) {
+					console.error('Error parsing response:', parseError);
+				}
+
+				alert(`❌ Hata: ${errorMessage}`);
+			}
+		} catch (error) {
+			console.error('Create coupon error:', error);
+			alert('❌ Sunucuya bağlanırken bir hata oluştu. Lütfen internet bağlantınızı kontrol edin.');
+		}
 	}
 });
 
