@@ -15,7 +15,7 @@
 
 const API_CONFIG = {
 	PROTOCOL: 'https',
-	URL: 'apir.koufrontend.com',
+	URL: 'apir.akadir.tech',
 
 	// Otomatik oluşturulan base URL (bu satırı değiştirmeyin)
 	get BASE_URL() {
