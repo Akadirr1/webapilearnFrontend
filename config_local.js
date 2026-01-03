@@ -1,25 +1,24 @@
 // ============================================
-// API Configuration - DEPLOYMENT
+// API Configuration //LOCAL ÇALIŞTIRMA İÇİN BU CONFİGİ KULLANIN
 // ============================================
 // Bu dosyayı düzenleyerek tüm uygulamanın API ayarlarını değiştirebilirsiniz.
 // 
 // Kullanım:
 // 1. PROTOCOL: 'http' veya 'https'
-// 2. URL: API sunucusunun tam adresi (örn: 'api.example.com', 'myapp.azurewebsites.net')
-// 
-// NOT: Bu dosya deployment (canlı ortam) için kullanılır.
-//      Local çalıştırma için config_local.js dosyasını kullanın.
+// 2. HOST: API sunucusunun adresi (örn: 'localhost', 'api.example.com')
+// 3. PORT: API sunucusunun portu (örn: 5001, 7100, 80)
 // 
 // NOT: Bu dosyayı değiştirdikten sonra tarayıcıyı yenilemeniz yeterlidir.
 // ============================================
 
 const API_CONFIG = {
 	PROTOCOL: 'https',
-	URL: 'apir.akadir.tech',
+	HOST: 'localhost',
+	PORT: 5002,
 
 	// Otomatik oluşturulan base URL (bu satırı değiştirmeyin)
 	get BASE_URL() {
-		return `${this.PROTOCOL}://${this.URL}/api`;
+		return `${this.PROTOCOL}://${this.HOST}:${this.PORT}/api`;
 	}
 };
 
@@ -29,9 +28,10 @@ window.API_BASE_URL = API_CONFIG.BASE_URL;
 
 // Console'da bilgilendirme
 console.log('===========================================');
-console.log('API Configuration Loaded - DEPLOYMENT');
+console.log('API Configuration Loaded');
 console.log('===========================================');
 console.log('Protocol:', API_CONFIG.PROTOCOL);
-console.log('URL:', API_CONFIG.URL);
+console.log('Host:', API_CONFIG.HOST);
+console.log('Port:', API_CONFIG.PORT);
 console.log('Base URL:', API_CONFIG.BASE_URL);
 console.log('===========================================');
