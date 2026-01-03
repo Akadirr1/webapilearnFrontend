@@ -14,7 +14,7 @@
 const API_CONFIG = {
 	PROTOCOL: 'https',
 	HOST: 'localhost',
-	PORT: 5000,
+	PORT: 5002,
 
 	// Otomatik oluşturulan base URL (bu satırı değiştirmeyin)
 	get BASE_URL() {

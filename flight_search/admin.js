@@ -588,8 +588,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			departureDatetime.min = now.toISOString().slice(0, 16);
 		}
 
-		// Load planes for dropdown
+		// Load planes and pilots for dropdown
 		loadPlanesForDropdown();
+		loadPilotsForSelection();
 	}
 
 	// Open Modal for Update
@@ -621,7 +622,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		document.getElementById('flight-modal-title').textContent = 'Uçuş Güncelle';
 		document.getElementById('flight-submit-btn-text').textContent = 'Güncelle';
 
-		// Load planes first, then populate fields
+		// Load planes and pilots first, then populate fields
 		loadPlanesForDropdown().then(() => {
 			// Populate form fields (use normalized datetime)
 			document.getElementById('departure-city').value = departure;
@@ -630,6 +631,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById('flight-price').value = price;
 			document.getElementById('plane-id').value = planeId;
 		});
+		loadPilotsForSelection();
 	}
 
 	// Close Modal
@@ -706,13 +708,27 @@ document.addEventListener('DOMContentLoaded', function () {
 			return;
 		}
 
+		// Get selected pilots
+		const selectedPilots = [];
+		const pilotCheckboxes = document.querySelectorAll('#pilots-container input[type="checkbox"]:checked');
+		pilotCheckboxes.forEach(checkbox => {
+			selectedPilots.push(parseInt(checkbox.value));
+		});
+
+		// Validate at least one pilot is selected
+		if (selectedPilots.length === 0) {
+			alert('Lütfen en az bir pilot seçin!');
+			return;
+		}
+
 		// Prepare request body (backend will set bosKoltukSayisi from ucak.kapasite)
 		const requestBody = {
 			kalkisYeri: kalkisYeri,
 			varisYeri: varisYeri,
 			kalkisTarihi: kalkisTarihi,
 			fiyat: fiyat,
-			ucakId: ucakId
+			ucakId: ucakId,
+			pilotIds: selectedPilots
 		};
 
 		console.log(isUpdateMode ? 'Updating flight:' : 'Creating flight:', requestBody);
@@ -1276,6 +1292,63 @@ document.addEventListener('DOMContentLoaded', function () {
 		} finally {
 			planeModalLoading.classList.add('hidden');
 			planeModalLoading.classList.remove('flex');
+		}
+	}
+
+	// ============================================
+	// Pilot Functions
+	// ============================================
+
+	// Load Pilots for Selection
+	async function loadPilotsForSelection() {
+		const pilotsContainer = document.getElementById('pilots-container');
+
+		// Show loading state
+		pilotsContainer.innerHTML = '<p class="text-sm text-gray-500">Pilotlar yükleniyor...</p>';
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Ucus/pilotlar`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include'
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				const pilots = data.result || data;
+				console.log('Pilots loaded:', pilots);
+
+				// Clear container
+				pilotsContainer.innerHTML = '';
+
+				if (pilots && pilots.length > 0) {
+					pilots.forEach(pilot => {
+						const pilotDiv = document.createElement('div');
+						pilotDiv.className = 'flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700';
+						pilotDiv.innerHTML = `
+							<input type="checkbox" id="pilot-${pilot.id}" value="${pilot.id}" 
+								class="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary">
+							<label for="pilot-${pilot.id}" class="flex-1 text-sm text-text-light dark:text-text-dark cursor-pointer">
+								<span class="font-semibold">${pilot.ad} ${pilot.soyad}</span>
+								<span class="text-gray-500 text-xs ml-2">(ID: ${pilot.id})</span>
+							</label>
+						`;
+						pilotsContainer.appendChild(pilotDiv);
+					});
+				} else {
+					pilotsContainer.innerHTML = '<p class="text-sm text-error">Sistemde pilot bulunamadı</p>';
+				}
+			} else if (response.status === 401) {
+				console.error('Yetkisiz erişim');
+				pilotsContainer.innerHTML = '<p class="text-sm text-error">Yetki hatası</p>';
+			} else {
+				throw new Error('Pilotlar yüklenemedi');
+			}
+		} catch (error) {
+			console.error('Load pilots error:', error);
+			pilotsContainer.innerHTML = '<p class="text-sm text-error">Pilotlar yüklenemedi</p>';
 		}
 	}
 

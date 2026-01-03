@@ -457,7 +457,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		const seatNumbers = selectedSeats.map(s => s.seatNumber.toString());
 		const requestBody = {
 			ucusId: parseInt(flightId),
-			koltukNumaraları: seatNumbers
+			koltukNumaraları: seatNumbers,
+			kuponKodu: appliedCoupon ? appliedCoupon.code : ""
 		};
 
 		console.log('Rezervasyon İsteği:', requestBody);
