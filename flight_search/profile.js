@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		submitBtn.textContent = 'Değiştiriliyor...';
 
 		try {
-			const response = await fetch('https://localhost:5000/api/Auth/Re-Password', {
+			const response = await fetch(`${API_BASE_URL}/Auth/Re-Password`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
