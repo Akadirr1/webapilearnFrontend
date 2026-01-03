@@ -128,12 +128,27 @@ document.addEventListener('DOMContentLoaded', function () {
 	const createCouponBtn = document.getElementById('create-coupon-btn');
 	const newCouponValue = document.getElementById('new-coupon-value');
 
+	// Pilots elements
+	const tabPilots = document.getElementById('tab-pilots');
+	const contentPilots = document.getElementById('content-pilots');
+	const pilotsLoading = document.getElementById('pilots-loading');
+	const pilotsList = document.getElementById('pilots-list');
+	const pilotsListContainer = document.getElementById('pilots-list-container');
+	const noPilots = document.getElementById('no-pilots');
+	const pilotsErrorState = document.getElementById('pilots-error-state');
+	const pilotsErrorMessage = document.getElementById('pilots-error-message');
+	const pilotsRetryBtn = document.getElementById('pilots-retry-btn');
+	const pilotsTotalCount = document.getElementById('pilots-total-count');
+	const pilotsActiveCount = document.getElementById('pilots-active-count');
+	const pilotsShowingCount = document.getElementById('pilots-showing-count');
+
 	// Data
 	let allReservations = [];
 	let filteredReservations = [];
 	let allFlights = [];
 	let allPlanes = [];
 	let allCoupons = [];
+	let allPilots = [];
 	let currentTab = 'reservations';
 
 	// Initialize
@@ -239,6 +254,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			tabCoupons.addEventListener('click', () => switchTab('coupons'));
 		}
 
+		if (tabPilots) {
+			tabPilots.addEventListener('click', () => switchTab('pilots'));
+		}
+
 		// Flights retry button
 		if (flightsRetryBtn) {
 			flightsRetryBtn.addEventListener('click', loadFlights);
@@ -257,6 +276,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		// Coupons retry button
 		if (couponsRetryBtn) {
 			couponsRetryBtn.addEventListener('click', loadCoupons);
+		}
+
+		// Pilots retry button
+		if (pilotsRetryBtn) {
+			pilotsRetryBtn.addEventListener('click', loadPilots);
 		}
 
 		// Create coupon button
@@ -852,12 +876,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		tabPlanes.classList.add('border-transparent', 'text-gray-500');
 		tabCoupons.classList.remove('active', 'border-primary', 'text-primary');
 		tabCoupons.classList.add('border-transparent', 'text-gray-500');
+		tabPilots.classList.remove('active', 'border-primary', 'text-primary');
+		tabPilots.classList.add('border-transparent', 'text-gray-500');
 
 		// Hide all content
 		contentReservations.classList.add('hidden');
 		contentFlights.classList.add('hidden');
 		contentPlanes.classList.add('hidden');
 		contentCoupons.classList.add('hidden');
+		contentPilots.classList.add('hidden');
 
 		// Update tab buttons and show content
 		if (tab === 'reservations') {
@@ -890,6 +917,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			// Load coupons if not loaded yet
 			if (allCoupons.length === 0) {
 				loadCoupons();
+			}
+		} else if (tab === 'pilots') {
+			tabPilots.classList.add('active', 'border-primary', 'text-primary');
+			tabPilots.classList.remove('border-transparent', 'text-gray-500');
+			contentPilots.classList.remove('hidden');
+
+			// Load pilots if not loaded yet
+			if (allPilots.length === 0) {
+				loadPilots();
 			}
 		}
 	}
@@ -1759,7 +1795,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				const createdCoupon = await response.json();
 				console.log('Coupon created:', createdCoupon);
 				
-				alert('✅ Kupon başarıyla oluşturuldu!');
+				// Show created coupon details
+				showCreatedCouponModal(createdCoupon);
 				newCouponValue.value = '';
 				
 				// Reload coupons
@@ -1786,6 +1823,173 @@ document.addEventListener('DOMContentLoaded', function () {
 			console.error('Create coupon error:', error);
 			alert('❌ Sunucuya bağlanırken bir hata oluştu. Lütfen internet bağlantınızı kontrol edin.');
 		}
+	}
+
+	// Show Created Coupon Modal
+	function showCreatedCouponModal(coupon) {
+		// Create modal overlay
+		const overlay = document.createElement('div');
+		overlay.id = 'coupon-success-modal';
+		overlay.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm';
+		
+		overlay.innerHTML = `
+			<div class="bg-white dark:bg-background-dark rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden animate-pulse-once">
+				<!-- Header -->
+				<div class="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-center">
+					<span class="material-symbols-outlined text-white text-6xl mb-2">celebration</span>
+					<h2 class="text-2xl font-bold text-white">Kupon Oluşturuldu!</h2>
+				</div>
+				
+				<!-- Content -->
+				<div class="p-6">
+					<div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center mb-4">
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Kupon Kodu</p>
+						<p class="text-3xl font-black tracking-wider text-primary select-all">${coupon.value}</p>
+					</div>
+					
+					<div class="grid grid-cols-2 gap-4 mb-6">
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
+							<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">İndirim Oranı</p>
+							<p class="text-2xl font-bold text-green-600">%${coupon.indirimOrani}</p>
+						</div>
+						<div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 text-center">
+							<p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Kupon ID</p>
+							<p class="text-2xl font-bold text-text-light dark:text-text-dark">#${coupon.id}</p>
+						</div>
+					</div>
+					
+					<div class="flex gap-3">
+						<button onclick="navigator.clipboard.writeText('${coupon.value}'); this.innerHTML='<span class=\\'material-symbols-outlined text-base\\'>check</span> Kopyalandı!'; setTimeout(() => this.innerHTML='<span class=\\'material-symbols-outlined text-base\\'>content_copy</span> Kodu Kopyala', 2000);" 
+							class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gray-100 dark:bg-gray-700 px-4 py-3 text-sm font-semibold text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+							<span class="material-symbols-outlined text-base">content_copy</span>
+							Kodu Kopyala
+						</button>
+						<button onclick="document.getElementById('coupon-success-modal').remove();" 
+							class="flex-1 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary/90 transition-colors">
+							<span class="material-symbols-outlined text-base">check_circle</span>
+							Tamam
+						</button>
+					</div>
+				</div>
+			</div>
+		`;
+		
+		// Close on overlay click
+		overlay.addEventListener('click', (e) => {
+			if (e.target === overlay) {
+				overlay.remove();
+			}
+		});
+		
+		document.body.appendChild(overlay);
+	}
+
+	// Load Pilots
+	async function loadPilots() {
+		// Show loading
+		pilotsLoading.classList.remove('hidden');
+		pilotsList.classList.add('hidden');
+		noPilots.classList.add('hidden');
+		pilotsErrorState.classList.add('hidden');
+
+		try {
+			const response = await fetch(`${API_BASE_URL}/Ucus/pilotlar`, {
+				method: 'GET',
+				credentials: 'include'
+			});
+
+			console.log('Pilots Response Status:', response.status);
+
+			if (!response.ok) {
+				throw new Error('Pilotlar yüklenemedi');
+			}
+
+			const data = await response.json();
+			console.log('Pilots data:', data);
+
+			// API returns { result: [...], ... } wrapper object
+			const pilots = data.result || data || [];
+			allPilots = pilots;
+
+			// Hide loading
+			pilotsLoading.classList.add('hidden');
+
+			if (pilots.length === 0) {
+				noPilots.classList.remove('hidden');
+			} else {
+				pilotsList.classList.remove('hidden');
+				renderPilots(pilots);
+			}
+
+		} catch (error) {
+			console.error('Pilots load error:', error);
+
+			// Hide loading
+			pilotsLoading.classList.add('hidden');
+
+			// Show error
+			pilotsErrorState.classList.remove('hidden');
+			if (pilotsErrorMessage) {
+				pilotsErrorMessage.textContent = error.message || 'Pilotlar yüklenirken bir hata oluştu';
+			}
+		}
+	}
+
+	// Render Pilots
+	function renderPilots(pilots) {
+		// Update stats
+		if (pilotsTotalCount) {
+			pilotsTotalCount.textContent = pilots.length;
+		}
+		if (pilotsActiveCount) {
+			pilotsActiveCount.textContent = pilots.length;
+		}
+		if (pilotsShowingCount) {
+			pilotsShowingCount.textContent = `${pilots.length} pilot gösteriliyor`;
+		}
+
+		// Clear container
+		pilotsListContainer.innerHTML = '';
+
+		// Create pilot cards
+		pilots.forEach(pilot => {
+			const card = createPilotCard(pilot);
+			pilotsListContainer.appendChild(card);
+		});
+	}
+
+	// Create Pilot Card
+	function createPilotCard(pilot) {
+		const card = document.createElement('div');
+		card.className = 'rounded-xl border border-border-light dark:border-border-dark bg-white/70 dark:bg-background-dark/70 p-6 backdrop-blur-sm hover:shadow-lg transition-shadow';
+
+		const fullName = `${pilot.ad || ''} ${pilot.soyad || ''}`.trim() || 'İsimsiz Pilot';
+		const email = pilot.email || 'Email belirtilmemiş';
+		const pilotId = pilot.id || pilot.pilotId || 'N/A';
+
+		card.innerHTML = `
+			<div class="flex items-start gap-4">
+				<div class="flex-shrink-0 w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+					<span class="material-symbols-outlined text-purple-600 text-2xl">person</span>
+				</div>
+				<div class="flex-1 min-w-0">
+					<h3 class="text-lg font-bold text-text-light dark:text-text-dark truncate">${fullName}</h3>
+					<p class="text-sm text-gray-500 dark:text-gray-400 truncate">${email}</p>
+					<div class="mt-3 flex items-center gap-2">
+						<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400">
+							<span class="material-symbols-outlined text-sm">badge</span>
+							ID: ${pilotId}
+						</span>
+						<span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+							<span class="material-symbols-outlined text-sm">check_circle</span>
+							Aktif
+						</span>
+					</div>
+				</div>
+			</div>
+		`;
+
+		return card;
 	}
 });
 
