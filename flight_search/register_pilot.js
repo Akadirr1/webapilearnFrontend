@@ -104,7 +104,7 @@ async function handlePilotRegister(event) {
 	hideSuccess();
 
 	try {
-		const response = await fetch(`${API_BASE_URL}/api/Auth/Register-Pilot`, {
+		const response = await fetch(`${API_BASE_URL}/Auth/Register-Pilot`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
