@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Pilot Kayıt - Admin Panel</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800;900&amp;display=swap"
+		rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
+	<script src="../config.js"></script>
+	<script src="register_pilot.js"></script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+	<div class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden p-4 md:p-8">
+		<!-- Background Image -->
+		<div class="absolute inset-0 z-0 opacity-5 dark:opacity-[0.02]">
+			<img class="h-full w-full object-cover" data-alt="Abstract white architectural lines on a dark background"
+				src="../images/registration-background.jpg" />
+		</div>
+		<div class="relative z-10 flex w-full max-w-lg flex-col items-center">
+			<!-- Back Button -->
+			<div class="w-full mb-4">
+				<a href="admin.html"
+					class="inline-flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+					<span class="material-symbols-outlined">arrow_back</span>
+					<span class="font-medium">Admin Panele Dön</span>
+				</a>
+			</div>
+
+			<!-- Logo -->
+			<div class="mb-6 flex items-center gap-3">
+				<span class="material-symbols-outlined text-primary text-4xl">flight</span>
+				<span class="text-2xl font-bold tracking-tight text-text-light dark:text-text-dark">Pilot Kayıt</span>
+			</div>
+
+			<!-- Card Container -->
+			<div
+				class="w-full rounded-xl border border-border-light dark:border-border-dark bg-white/50 dark:bg-background-dark/50 p-6 shadow-lg backdrop-blur-sm sm:p-8">
+				<!-- Heading -->
+				<div class="mb-6 text-center">
+					<h1 class="text-3xl font-black tracking-tighter text-text-light dark:text-text-dark">Yeni Pilot Kaydı
+					</h1>
+					<p class="mt-2 text-base text-gray-600 dark:text-gray-400">Sisteme yeni pilot ekleyin.</p>
+				</div>
+
+				<!-- Success Message -->
+				<div id="successMessage"
+					class="hidden mb-4 p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
+					<p class="text-sm text-green-600 dark:text-green-400"></p>
+				</div>
+
+				<!-- Error Message -->
+				<div id="errorMessage"
+					class="hidden mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+					<p class="text-sm text-red-600 dark:text-red-400"></p>
+				</div>
+
+				<!-- Form -->
+				<form id="pilotRegisterForm" class="space-y-4">
+					<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+						<!-- Ad -->
+						<div>
+							<label class="block text-sm font-medium text-text-light dark:text-text-dark pb-1.5"
+								for="ad">Ad</label>
+							<input
+								class="form-input block w-full rounded-lg border-border-light bg-background-light p-3 text-sm text-text-light placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-gray-400"
+								id="ad" name="ad" placeholder="Pilot adı" type="text" required />
+						</div>
+
+						<!-- Soyad -->
+						<div>
+							<label class="block text-sm font-medium text-text-light dark:text-text-dark pb-1.5"
+								for="soyad">Soyad</label>
+							<input
+								class="form-input block w-full rounded-lg border-border-light bg-background-light p-3 text-sm text-text-light placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-gray-400"
+								id="soyad" name="soyad" placeholder="Pilot soyadı" type="text" required />
+						</div>
+					</div>
+
+					<!-- Email -->
+					<div>
+						<label class="block text-sm font-medium text-text-light dark:text-text-dark pb-1.5"
+							for="email">Email</label>
+						<input
+							class="form-input block w-full rounded-lg border-border-light bg-background-light p-3 text-sm text-text-light placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-gray-400"
+							id="email" name="email" placeholder="pilot@havayollari.com" type="email" required />
+					</div>
+
+					<!-- Password -->
+					<div>
+						<label class="block text-sm font-medium text-text-light dark:text-text-dark pb-1.5"
+							for="sifre">Şifre</label>
+						<div class="relative">
+							<input
+								class="form-input block w-full rounded-lg border-border-light bg-background-light p-3 pr-12 text-sm text-text-light placeholder:text-gray-500 focus:border-primary focus:ring-primary dark:border-border-dark dark:bg-gray-800 dark:text-text-dark dark:placeholder:text-gray-400"
+								id="sifre" name="sifre" placeholder="••••••••" type="password" required />
+							<button type="button" id="togglePassword"
+								class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted-light dark:text-text-muted-dark">
+								<span class="material-symbols-outlined">visibility</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- Submit Button -->
+					<button type="submit" id="registerButton"
+						class="w-full rounded-lg bg-primary px-6 py-3 text-base font-bold text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+						<span id="buttonText">Pilot Kaydı Oluştur</span>
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
